@@ -336,11 +336,11 @@ public class ListaDoblementeEncadenada<K> implements IListaDoblementeEncadenada<
 		}
 		Nodo<K> elNodo = new Nodo(pNodo);
 		actual = elNodo;
-		
+
 		// TODO Auto-generated method stub
-		
-	
-	
+
+
+
 	}
 
 	public class IteratorLista implements Iterator<K>
@@ -357,22 +357,24 @@ public class ListaDoblementeEncadenada<K> implements IListaDoblementeEncadenada<
 		}
 		@Override
 		public boolean hasNext() {
-			if(!itero)
-			{
-				return actual != null;
-			}
+			//if(!itero)
+			//{
+			return actual != null;
+			//}
 
-			else
+			/*else
 			{
 				return actual.darSiguiente() != null;
-			}
+			}*/
 
 		}
 
 		@Override
 		public K next() {
-
-			if(!itero)
+			K elemento = actual.darGenerico();
+			actual = actual.darSiguiente();
+			return elemento;
+			/*if(!itero)
 			{
 				itero = true; 
 
@@ -388,11 +390,11 @@ public class ListaDoblementeEncadenada<K> implements IListaDoblementeEncadenada<
 		{
 			itero = false;
 			actual = (Nodo<K>) primero;
-			
+
+		}*/
+
 		}
 
 	}
 
-
-	
 }

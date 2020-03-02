@@ -1,6 +1,8 @@
 package model.data_structures;
 
-public class ArregloDinamico<K> implements IArregloDinamico
+import java.util.Iterator;
+
+public class ArregloDinamico<K> implements IArregloDinamico<K>, Iterable<K>
 {
 	 
 	 private int tamanoMax;
@@ -33,33 +35,33 @@ public class ArregloDinamico<K> implements IArregloDinamico
 	}
 
 	@Override
-	public Object darElemento(int i) {
+	public K darElemento(int i) {
 		// TODO Auto-generated method stub
 		return elementos[i];
 	}
 
 	@Override
-	public void agregar(Object dato) {
+	public void agregar(K dato) {
 		
 		if ( tamanoAct == tamanoMax )
 		{  // caso de arreglo lleno (aumentar tamaNo)
 			tamanoMax = 2 * tamanoMax;
-			Object [ ] copia = elementos;
+			K[ ] copia = elementos;
 			elementos = (K[]) new Object[tamanoMax];
 			for ( int i = 0; i < tamanoAct; i++)
 			{
-				elementos[i] = (K) copia[i];
+				elementos[i] = copia[i];
 			} 
 			System.out.println("Arreglo lleno: " + tamanoAct + " - Arreglo duplicado: " + tamanoMax);
 		}	
-		elementos[tamanoAct] = (K) dato;
+		elementos[tamanoAct] = dato;
 		tamanoAct++;
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Object buscar(Object dato) {K elDato = null;
+	public K buscar(Object dato) {K elDato = null;
 
 	for(int i = 0; i < elementos.length; i++)
 	{
@@ -75,7 +77,7 @@ public class ArregloDinamico<K> implements IArregloDinamico
 	}
 
 	@Override
-	public Object eliminar(Object dato) 
+	public K eliminar(Object dato) 
 	{
 		K elDato = null;
 
@@ -92,6 +94,32 @@ public class ArregloDinamico<K> implements IArregloDinamico
 	// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
 	return elDato;
 	}
+	@Override
+	public Iterator<K> iterator() {
+		// TODO Auto-generated method stub
+		return new IteradorArregloDinamico(); 
+	}
+	
+	public class IteradorArregloDinamico implements Iterator<K> {
+		private int posActual;
+		
+		public IteradorArregloDinamico() {
+			posActual = -1;
+		}
+		@Override
+		public boolean hasNext() {
+			// TODO Auto-generated method stub
+			return posActual + 1 != tamanoAct;
+		}
+		@Override
+		public K next() {
+			// TODO Auto-generated method stub
+			return elementos[++posActual];
+		}
+		
+	}
+	
+	
 
 }
 

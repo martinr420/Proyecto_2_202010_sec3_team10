@@ -2,7 +2,10 @@ package model.logic;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -11,6 +14,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
 import model.data_structures.ArregloDinamico;
+import model.data_structures.IArregloDinamico;
 import model.data_structures.ILinkedQueue;
 import model.data_structures.IListaDoblementeEncadenada;
 import model.data_structures.LinkedQueue;
@@ -211,20 +215,10 @@ public class Model {
 	{
 		boolean parar = false;
 		Multa laMulta = null;
-		Nodo<Multa> actual = (Nodo<Multa>) datos.iterator();
-		while(actual.hasNext() && !parar)
-		{
-			if(actual.darGenerico().getId() == pID)
-			{
-				parar = true;
-				laMulta = actual.darGenerico();
-				actual = actual.next();
-
-			}
+		for(Multa multa: datos) {
+			if(multa.getId() == pID) return multa;
 		}
-
-
-		return laMulta;
+		return null;
 	}
 
 
@@ -372,113 +366,19 @@ public class Model {
 
 	public void darMultasComparacion(String fecha1, String fecha2)
 	{
-		ListaDoblementeEncadenada<Multa> listaF1 = darMultaPorFecha(fecha1);
-		ordenarPorInfraccion(listaF1);
-		IteratorLista iterF1 = (IteratorLista) listaF1.iterator();
-
-		ListaDoblementeEncadenada<Infraccion> listaInfra1 = new ListaDoblementeEncadenada<>();
-		Multa laMulta = (Multa) iterF1.next();
-		Infraccion infra1 = new Infraccion(laMulta.getInfraccion());
-		listaInfra1.agregarNodoAlFinal(infra1);
-		while(iterF1.hasNext())
-		{
-
-			laMulta = (Multa) iterF1.next();
-
-			if(infra1.getInfra().equals(laMulta.getInfraccion()))
-			{
-				infra1.sumar();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		try {
+			Date fechaReal1 = sdf.parse(fecha1);
+			Date fechaReal2 = sdf.parse(fecha2);
+			IArregloDinamico<Infraccion> listaMultas = new ArregloDinamico<Infraccion>(100); 
+			for(Multa multa: datos) {
+				//if(multa.getFecha())
 			}
-			else
-			{
-				Infraccion agregar = new Infraccion(laMulta.getInfraccion());
-				listaInfra1.agregarNodoAlFinal(agregar);
-				infra1 = agregar;
-			}
-
-			ListaDoblementeEncadenada<Multa> listaF2 = darMultaPorFecha(fecha2);
-			ordenarPorInfraccion(listaF2);
-			IteratorLista iterF2 = (IteratorLista) listaF2.iterator();
-			Multa laMulta2 = (Multa) iterF2.next();
-			Infraccion infra2 = new Infraccion(laMulta.getInfraccion());
-
-
-			ListaDoblementeEncadenada<Infraccion> listaInfra2 = new ListaDoblementeEncadenada<>();
-			listaInfra2.agregarNodoAlFinal(infra2);
-
-			while(iterF2.hasNext())
-			{
-
-				laMulta = (Multa) iterF2.next();
-
-				if(infra2.getInfra().equals(laMulta2.getInfraccion()))
-				{
-					infra2.sumar();
-				}
-				else
-				{
-					Infraccion agregar = new Infraccion(laMulta.getInfraccion());
-					listaInfra2.agregarNodoAlFinal(agregar);
-					infra2 = agregar;
-				}
-
-				System.out.println("Infracción    | "+ fecha1 + " | " + fecha2);
-
-				IteratorLista iteri1 = (IteratorLista) listaInfra1.iterator();
-				IteratorLista iteri2 = (IteratorLista) listaInfra2.iterator();
-
-
-				Infraccion laInfra1 = (Infraccion) iteri1.next();
-				Infraccion laInfra2 = (Infraccion) iteri2.next();
-
-				while(iteri1.hasNext() || iteri2.hasNext())
-				{
-
-					if(laInfra1.getInfra().equals(laInfra2))
-					{
-						System.out.println(laInfra1.getInfra() + " |" + laInfra1.getTotal() + " | " + laInfra2.getTotal());
-						laInfra1 = (Infraccion) iteri1.next();
-						laInfra2 = (Infraccion) iteri2.next();
-					}
-					else if(laInfra1.getInfra().compareTo(laInfra2.getInfra()) < 0)
-					{
-						boolean encontro = false;
-						while(!encontro || iteri1.hasNext())
-						{
-							laInfra1 = (Infraccion) iteri1.next();
-							if(laInfra1.compareTo(laInfra2) == 0)
-							{
-								encontro = true;
-							}
-						}
-					}
-					else
-					{
-						boolean encontro = false;
-						while(!encontro || iteri2.hasNext())
-						{
-							laInfra2 = (Infraccion) iteri2.next();
-							if(laInfra1.compareTo(laInfra2) == 0)
-							{
-								encontro = true;
-							}
-						}
-
-					}
-					
-					
-				}
-
-			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Por favor ingrese las fechas con el formato pedido >:v");
+			e.printStackTrace();
 		}
-
-
-		;
-
-
-
-
-
 	}
 
 

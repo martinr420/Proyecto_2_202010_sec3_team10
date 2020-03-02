@@ -10,7 +10,7 @@
 	 * @author martin
 	 *
 	 */
-	public interface IListaDoblementeEncadenada<K> extends Iterable {
+	public interface IListaDoblementeEncadenada<K> extends Iterable<K> {
 
 
 		public K darPrimero();
@@ -18,9 +18,9 @@
 		
 		public K darUltimo();
 		/**
-		 * metodo que retorna un int con el tamaño de la lista
+		 * metodo que retorna un int con el tamaï¿½o de la lista
 		 * si la lista esta vacia retorna 0.
-		 * @return int con el tamaño de la lista
+		 * @return int con el tamaï¿½o de la lista
 		 */
 		public int darTamano();
 
@@ -40,7 +40,7 @@
 		public int darPosicionNodo (K pNodo) throws noExisteObjetoException;
 		
 		/**
-		 * Elimina el ultimo nodo de la lista, reduce el tamaño de la lista y asigna el atributo
+		 * Elimina el ultimo nodo de la lista, reduce el tamaï¿½o de la lista y asigna el atributo
 		 * ultimo al nodo anterior 
 		 * 
 		 */
@@ -48,14 +48,14 @@
 		public K EliminarUltimo() throws noExisteObjetoException;
 		
 		/**
-		 * elimina el primer nodo de la lista, reduce su tamaño y 
+		 * elimina el primer nodo de la lista, reduce su tamaï¿½o y 
 		 * asigna el atributo primerNodo al siguiente Nodo si existe
 		 */
 
 		public K EliminarPrimero () throws noExisteObjetoException;
 		
 		/**
-		 * Elimina el nodo en la posicion indicada, reduce el tamaño de la lista
+		 * Elimina el nodo en la posicion indicada, reduce el tamaï¿½o de la lista
 		 * @param pPosicion
 		 */
 
