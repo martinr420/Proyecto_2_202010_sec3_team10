@@ -28,6 +28,8 @@ public class View
         System.out.println("||" + "3. Comparar comparendos por fecha");
         System.out.println("||" + "4. Dar primer Comparendo Infraccion");
         System.out.println("|| 5. darComparendo por Infraccion");
+        System.out.println("|| 6. Dar comparendos por tipo de servicio");
+        System.out.println("|| 7. Dar comparendos por fecha y localidad");
         System.out.println("|| 10. dar ASCII localidades");
         System.out.println( " **==========================**\n");
 
@@ -109,7 +111,7 @@ public class View
      */
     public void displayOp2Menu() {
         System.out.println( "====== Dar comparendos por fecha  ======");
-        System.out.println("Digite el año de la fecha");
+        System.out.println("Digite el aï¿½o de la fecha");
        
     }
     public void displayOp21Menu()
@@ -143,11 +145,11 @@ public class View
     public void displayOp3Menu()
     {
     	System.out.println("===== Comparar Comparendos =====");
-    	System.out.println("Digite el año de la fecha");
+    	System.out.println("Digite el aï¿½o de la fecha");
     }
     public void displayOp31Menu()
     {
-    	System.out.println("digite el año de la segunda fecha");
+    	System.out.println("digite el aï¿½o de la segunda fecha");
     }
     public void displayOp4Menu()
     {
@@ -168,5 +170,10 @@ public class View
     public void  displayOp10Menu()
     {
     	System.out.println("================== ASCII=========================");
+    }
+    
+    public void diplayOp6Menu()
+    {
+    	System.out.println("============================== dar comparendos por infraccion");
     }
 }

@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public interface IArregloDinamico <K>{
+public interface IArregloDinamico <K> extends Iterable<K>{
 
 
 	/**
@@ -43,6 +43,11 @@ public interface IArregloDinamico <K>{
 	 * @return dato eliminado
 	 */
 	K eliminar( K dato );
+	
+	/**
+	 * Pone el valor del arreglo en la posicion i el valor ingresado por parametro
+	 */
+	void modificar(K dato, int posicion);
 
 }
 

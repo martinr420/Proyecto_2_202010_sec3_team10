@@ -108,7 +108,7 @@ public class Model {
 		try {
 
 
-			ListaDoblementeEncadenada<Multa> listaMultas = new ListaDoblementeEncadenada<>();
+			datos = new ListaDoblementeEncadenada<>();
 
 
 			lector = new JsonReader(new FileReader(path));
@@ -125,7 +125,9 @@ public class Model {
 
 				JsonObject propiedades = (JsonObject) e.getAsJsonObject().get("properties");
 				long id = propiedades.get("OBJECTID").getAsLong();
-				String fecha = propiedades.get("FECHA_HORA").getAsString();
+				String cadenaFecha = propiedades.get("FECHA_HORA").getAsString();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				Date fecha = sdf.parse(cadenaFecha);
 				String medioDete = propiedades.getAsJsonObject().get("MEDIO_DETE").getAsString();
 				String claseVehiculo = propiedades.getAsJsonObject().get("CLASE_VEHI").getAsString();
 				String tipoServicio = propiedades.getAsJsonObject().get("TIPO_SERVI").getAsString();
@@ -167,6 +169,9 @@ public class Model {
 		catch (IOException e) 
 		{
 			e.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
 
@@ -197,7 +202,7 @@ public class Model {
 	{
 
 		IteratorLista lista = (IteratorLista) datos.iterator();
-		Multa laMulta = new Multa(-1, "", "", "", "", "", "","", null);
+		Multa laMulta = new Multa(-1, null, "", "", "", "", "","", null);
 
 		while(lista.hasNext())
 		{
@@ -370,10 +375,37 @@ public class Model {
 		try {
 			Date fechaReal1 = sdf.parse(fecha1);
 			Date fechaReal2 = sdf.parse(fecha2);
-			IArregloDinamico<Infraccion> listaMultas = new ArregloDinamico<Infraccion>(100); 
+			IArregloDinamico<Multa> listaMultas = new ArregloDinamico<Multa>(100); 
 			for(Multa multa: datos) {
-				//if(multa.getFecha())
+				if(multa.getFecha().equals(fechaReal1) || multa.getFecha().equals(fechaReal2)) {
+					listaMultas.agregar(multa);
+				}
 			}
+			IArregloDinamico<CodigoInfraccion> codigos = new ArregloDinamico<CodigoInfraccion>(100);
+			for(Multa multa: listaMultas) {
+				CodigoInfraccion codigo = null;
+				for(int i = 0; i < codigos.darTamano() && codigo == null; i++) {
+					if(codigos.darElemento(i).darCodigoInfraccion().equals(multa.infraccion)) {
+						codigo = codigos.darElemento(i);
+						codigo.incrementarNumeroComparendos();
+					}
+				}
+				if(codigo == null) {
+					codigo = new CodigoInfraccion(multa.infraccion);
+					codigos.agregar(codigo);
+				}
+				if(multa.getFecha().equals(fechaReal1)) {
+					codigo.incrementarNumeroComparendos();
+				} else {
+					codigo.incrementarNumeroComparendos2();
+				}
+			}
+			ordenarArreglo(codigos, 0, codigos.darTamano() - 1);
+			System.out.println("Infraccion  | " + fecha1 + "  | " + fecha2);
+			for(CodigoInfraccion codigo : codigos) {
+				System.out.println(codigo.darCodigoInfraccion() + "   | " + codigo.darNumeroComparendos() + "     | " + codigo.darNumeroComparendos2());
+			}
+			//
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Por favor ingrese las fechas con el formato pedido >:v");
@@ -382,6 +414,78 @@ public class Model {
 	}
 
 
+	public void darMultasComparacionTipoServicio() {
+		IArregloDinamico<Multa> listaMultas = new ArregloDinamico<Multa>(100); 
+		for(Multa multa: datos) {
+			if(multa.getServicio().equals("Particular") || multa.getServicio().equals("Público")) {
+				listaMultas.agregar(multa);
+			}
+		}
+		IArregloDinamico<CodigoInfraccion> codigos = new ArregloDinamico<CodigoInfraccion>(100);
+		for(Multa multa: listaMultas) {
+			CodigoInfraccion codigo = null;
+			for(int i = 0; i < codigos.darTamano() && codigo == null; i++) {
+				if(codigos.darElemento(i).darCodigoInfraccion().equals(multa.infraccion))
+					codigo = codigos.darElemento(i); 
+			}
+			if(codigo == null) {
+				codigo = new CodigoInfraccion(multa.infraccion);
+				codigos.agregar(codigo);
+
+			}
+			if(multa.getServicio().equals("Particular")) {
+				codigo.incrementarNumeroComparendos();
+			} else {
+				codigo.incrementarNumeroComparendos2();
+			}
+		}
+		ordenarArreglo(codigos, 0, codigos.darTamano() - 1);
+		System.out.println("Infraccion  | " + "Particular" + "  | " + "Publico");
+		for(CodigoInfraccion codigo : codigos) {
+			System.out.println(codigo.darCodigoInfraccion() + "   | " + codigo.darNumeroComparendos() + "     | " + codigo.darNumeroComparendos2());
+		}
+	}
+
+	public void comparendosEntreFechas(String fechaInicial, String fechaFinal, String localidad) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		try
+		{
+			Date fechaReal1 = sdf.parse(fechaInicial);
+			Date fechaReal2 = sdf.parse(fechaFinal);
+			IArregloDinamico<Multa> listaMultas = new ArregloDinamico<Multa>(100); 
+			for(Multa multa: datos) {
+				if(multa.getLocalidad().equals(localidad) && multa.getFecha().compareTo(fechaReal1) > 0 && multa.getFecha().compareTo(fechaReal2) < 0) {
+					listaMultas.agregar(multa);
+				}
+			}
+
+			IArregloDinamico<CodigoInfraccion> codigos = new ArregloDinamico<CodigoInfraccion>(100);
+			for(Multa multa: listaMultas) {
+				CodigoInfraccion codigo = null;
+				for(int i = 0; i < codigos.darTamano() && codigo == null; i++) {
+					if(codigos.darElemento(i).darCodigoInfraccion().equals(multa.infraccion))
+						codigo = codigos.darElemento(i); 
+				}
+				if(codigo == null) {
+					codigo = new CodigoInfraccion(multa.infraccion);
+					codigos.agregar(codigo);
+
+				}
+				if(multa.getLocalidad().equals(localidad) && multa.getFecha().compareTo(fechaReal1) > 0 || multa.getFecha().compareTo(fechaReal2) < 0) {
+					codigo.incrementarNumeroComparendos();
+				}
+			}
+			ordenarArreglo(codigos, 0, codigos.darTamano() - 1);
+			System.out.println("Infraccion  | " + "#Comparendos");
+			for(CodigoInfraccion codigo : codigos) {
+				System.out.println(codigo.darCodigoInfraccion() + "   | " + codigo.darNumeroComparendos() );
+			}
+		}
+		catch(ParseException pse)
+		{
+			pse.printStackTrace();
+		}
+	}
 
 	public void ordenarPorInfraccion(ListaDoblementeEncadenada<Multa> datos)
 	{
@@ -425,7 +529,7 @@ public class Model {
 		boolean encontro = false;
 		IteratorLista iter = (IteratorLista) datos.iterator();
 		Multa aRetornar = null;
-		
+
 		while(iter.hasNext() && !encontro)
 		{
 			Multa comparar = (Multa) iter.next();
@@ -435,17 +539,17 @@ public class Model {
 				aRetornar = comparar;
 			}
 		}
-		
+
 		return aRetornar;
 	}
-	
-	
+
+
 
 	public ListaDoblementeEncadenada<Multa> darComparendosPorInfraccion(String pInfraccion)
 	{
 		ListaDoblementeEncadenada<Multa> laLista = new ListaDoblementeEncadenada<>();
 		IteratorLista iter = (IteratorLista) datos.iterator();
-		
+
 		while(iter.hasNext())
 		{
 			Multa laMulta = (Multa) iter.next();
@@ -454,26 +558,26 @@ public class Model {
 				laLista.agregarNodoAlFinal(laMulta);
 			}
 		}
-		
+
 
 		return laLista;
-		
+
 	}
 
 	public ListaDoblementeEncadenada<Localidad> ASCII()
 	{
 		ListaDoblementeEncadenada<Localidad> localidades = new ListaDoblementeEncadenada<>();
-		
+
 		ListaDoblementeEncadenada<Multa> lista = (ListaDoblementeEncadenada<Multa>) datos;
-		
+
 		ordenarPorLocalidad(lista);
-		
-		
+
+
 		IteratorLista iter = (IteratorLista) lista.iterator();
-		
-		
+
+
 		Multa multa = (Multa) iter.next();
-		
+
 		Localidad laLoc = new Localidad(multa.getLocalidad());
 		localidades.agregarNodoAlFinal(laLoc);
 		while(iter.hasNext())
@@ -486,18 +590,18 @@ public class Model {
 			else
 			{
 				Localidad aInsertar = new Localidad(multa.getLocalidad());
-				
+
 				localidades.agregarNodoAlFinal(aInsertar);
 				laLoc = aInsertar;
 			}
-			
+
 		}
-		
-		
-		
+
+
+
 		return localidades;
 	}
-	
+
 	public void ordenarPorLocalidad(ListaDoblementeEncadenada<Multa> pLista)
 	{
 		int salto = datos.darTamano()/2;
@@ -531,6 +635,40 @@ public class Model {
 			}
 			salto/=2;
 		}
+	}
+
+	public <K extends Comparable<K>> void ordenarArreglo(IArregloDinamico<K> ordenar, int low, int high) {
+		if(low < high) {
+			int pi = partition(ordenar, low, high);
+			ordenarArreglo(ordenar, low, pi-1);
+			ordenarArreglo(ordenar, pi+1, high);
+		}
+	}
+
+	private <K extends Comparable <K>> int partition(IArregloDinamico<K> ordenar, int low, int high) {
+		K pivot = ordenar.darElemento(high);  
+		int i = (low-1); // index of smaller element 
+		for (int j=low; j<high; j++) 
+		{ 
+			// If current element is smaller than the pivot 
+			if (ordenar.darElemento(j).compareTo(pivot) < 0) 
+			{ 
+				i++; 
+
+				// swap arr[i] and arr[j] 
+				K temp = ordenar.darElemento(i); 
+
+				ordenar.modificar(ordenar.darElemento(j), i);
+				ordenar.modificar(temp, j);
+			} 
+		} 
+
+		// swap arr[i+1] and arr[high] (or pivot)
+		K temp = ordenar.darElemento(i+1);
+		ordenar.modificar(ordenar.darElemento(high), i+1);
+		ordenar.modificar(temp, high);
+
+		return i+1; 
 	}
 
 

@@ -1,11 +1,12 @@
 package model.logic;
 
+import java.util.Date;
 
 public class Multa implements Comparable<Multa>{
 
 	public long id;
 
-	public String fecha;
+	public Date fecha;
 
 	public String medioDete;
 
@@ -23,7 +24,7 @@ public class Multa implements Comparable<Multa>{
 
 
 
-	public Multa(long id, String fecha, String medioDete, String vehiculo, String servicio, String infraccion,
+	public Multa(long id, Date fecha, String medioDete, String vehiculo, String servicio, String infraccion,
 			String descripcion, String localidad, Geo geo) {
 		super();
 		this.id = id;
@@ -59,11 +60,11 @@ public class Multa implements Comparable<Multa>{
 		this.id = id;
 	}
 
-	public String getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 

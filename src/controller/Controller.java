@@ -175,6 +175,20 @@ public class Controller {
 					
 				
 					break;
+				case 6:
+					view.diplayOp6Menu();
+					modelo.darMultasComparacionTipoServicio();
+					break;
+				case 7:
+					reader.nextLine();
+					System.out.println("Ingrese la localidad");
+					String localidad = reader.nextLine();
+					System.out.println("Ingrese la fecha inicial");
+					String fechaInicial = reader.nextLine();
+					System.out.println("Ingrese la fecha final");
+					String fechaFinal = reader.nextLine();
+					modelo.comparendosEntreFechas(fechaInicial, fechaFinal, localidad);
+					break;
 				case 10:
 					view.displayOp10Menu();
 					

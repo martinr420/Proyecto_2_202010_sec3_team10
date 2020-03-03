@@ -21,7 +21,7 @@ public class TestModelo {
 
 	public void setUp2() throws noExisteObjetoException {
 		for(int i =0; i< CAPACIDAD;i++){
-			modelo.cargarDatos();
+			//modelo.cargarDatos();
 		}
 	}
 

@@ -118,6 +118,12 @@ public class ArregloDinamico<K> implements IArregloDinamico<K>, Iterable<K>
 		}
 		
 	}
+
+	@Override
+	public void modificar(K dato, int posicion) {
+		// TODO Auto-generated method stub
+		elementos[posicion] = dato;
+	}
 	
 	
 
