@@ -486,6 +486,48 @@ public class Model {
 			pse.printStackTrace();
 		}
 	}
+	
+    public void darMultasOrdenadasN (String n, String fechaInicial, String fechaFinal)
+    {
+    	int elN = Integer.parseInt(n);
+		
+		IArregloDinamico<Multa> listaMultas = new ArregloDinamico<Multa>(100);
+		for (Multa laMulta: datos)
+		{
+			
+		
+			if(laMulta.estaDentroDeFecha(fechaInicial, fechaFinal)) {
+				listaMultas.agregar(laMulta);
+				
+		
+    	}
+		}
+			IArregloDinamico<CodigoInfraccion> codigos = new ArregloDinamico<CodigoInfraccion>(100);
+			for(Multa multa: listaMultas) {
+				CodigoInfraccion codigo = null;
+				for(int i = 0; i < codigos.darTamano() && codigo == null; i++) {
+					if(codigos.darElemento(i).darCodigoInfraccion().equals(multa.infraccion))
+						codigo = codigos.darElemento(i); 
+				}
+				if(codigo == null) {
+					codigo = new CodigoInfraccion(multa.infraccion);
+					codigos.agregar(codigo);
+
+				}
+				if(multa.estaDentroDeFecha(fechaInicial, fechaFinal) ){
+					codigo.incrementarNumeroComparendos();
+				}
+			}
+			
+			ordenarArregloPorNumeroComparendos(codigos, 0, codigos.darTamano() - 1);
+			System.out.println("Infraccion  | " + "#Comparendos");
+			for(int i = 0; i < elN; i++) 
+			{
+				CodigoInfraccion codigo = codigos.darElemento(i);
+				System.out.println(codigo.darCodigoInfraccion() + "   | " + codigo.darNumeroComparendos() );
+			}
+		
+    }
 
 	public void ordenarPorInfraccion(ListaDoblementeEncadenada<Multa> datos)
 	{
@@ -644,18 +686,26 @@ public class Model {
 			ordenarArreglo(ordenar, pi+1, high);
 		}
 	}
+	
+	public <K extends Comparable<K>> void ordenarArregloPorNumeroComparendos(IArregloDinamico<CodigoInfraccion> ordenar, int low, int high) {
+		if(low < high) {
+			int pi = partition2(ordenar, low, high);
+			ordenarArreglo(ordenar, low, pi-1);
+			ordenarArreglo(ordenar, pi+1, high);
+		}
+	}
 
 	private <K extends Comparable <K>> int partition(IArregloDinamico<K> ordenar, int low, int high) {
 		K pivot = ordenar.darElemento(high);  
-		int i = (low-1); // index of smaller element 
+		int i = (low-1); 
 		for (int j=low; j<high; j++) 
 		{ 
-			// If current element is smaller than the pivot 
+			 
 			if (ordenar.darElemento(j).compareTo(pivot) < 0) 
 			{ 
 				i++; 
 
-				// swap arr[i] and arr[j] 
+				
 				K temp = ordenar.darElemento(i); 
 
 				ordenar.modificar(ordenar.darElemento(j), i);
@@ -663,8 +713,33 @@ public class Model {
 			} 
 		} 
 
-		// swap arr[i+1] and arr[high] (or pivot)
 		K temp = ordenar.darElemento(i+1);
+		ordenar.modificar(ordenar.darElemento(high), i+1);
+		ordenar.modificar(temp, high);
+
+		return i+1; 
+	}
+	
+	private <K extends Comparable <K>> int partition2(IArregloDinamico<CodigoInfraccion> ordenar, int low, int high) 
+	{
+		int pivote = ordenar.darElemento(high).darNumeroComparendos();  
+		int i = (low-1); 
+		for (int j=low; j<high; j++) 
+		{ 
+			 
+			if (ordenar.darElemento(j).darNumeroComparendos() < pivote) 
+			{ 
+				i++; 
+
+				
+				CodigoInfraccion temp = ordenar.darElemento(i); 
+
+				ordenar.modificar(ordenar.darElemento(j), i);
+				ordenar.modificar(temp, j);
+			} 
+		} 
+
+		CodigoInfraccion temp = ordenar.darElemento(i+1);
 		ordenar.modificar(ordenar.darElemento(high), i+1);
 		ordenar.modificar(temp, high);
 

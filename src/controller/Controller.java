@@ -189,6 +189,20 @@ public class Controller {
 					String fechaFinal = reader.nextLine();
 					modelo.comparendosEntreFechas(fechaInicial, fechaFinal, localidad);
 					break;
+					
+				case 8:
+				
+				reader.nextLine();
+				System.out.println("Ingrese la fecha inicial");
+				String fechaInicial1 = reader.nextLine();
+				System.out.println("Ingrese la fecha final");
+				String fechaInicial2 = reader.nextLine();
+				System.out.println("Ingrese el numero de codigos");
+				String elN = reader.nextLine();
+				modelo.darMultasOrdenadasN(elN, fechaInicial1, fechaInicial2);
+				break;
+				
+				
 				case 10:
 					view.displayOp10Menu();
 					
