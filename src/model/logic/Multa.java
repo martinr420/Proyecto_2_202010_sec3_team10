@@ -4,28 +4,30 @@ import java.util.Date;
 
 public class Multa implements Comparable<Multa>{
 
-	public long id;
+	private long id;
 
-	public Date fecha;
+	private Date fecha;
 
-	public String medioDete;
+	private String medioDete;
 
-	public String vehiculo;
+	private String vehiculo;
 
-	public String servicio;
+	private String servicio;
 
-	public String infraccion;
+	private String infraccion;
 
-	public String descripcion;
+	private String descripcion;
 
-	public String localidad;
+	private String localidad;
 
-	public Geo geo;
+	private String municipio;
+	
+	private Geo geo;
 
 
 
 	public Multa(long id, Date fecha, String medioDete, String vehiculo, String servicio, String infraccion,
-			String descripcion, String localidad, Geo geo) {
+			String descripcion, String localidad, String municipio, Geo geo) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -35,6 +37,7 @@ public class Multa implements Comparable<Multa>{
 		this.infraccion = infraccion;
 		this.descripcion = descripcion;
 		this.localidad = localidad;
+		this.municipio = municipio;
 		this.geo = geo;
 	}
 
@@ -122,80 +125,6 @@ public class Multa implements Comparable<Multa>{
 
 	public void setGeo(Geo geo) {
 		this.geo = geo;
-	}
-
-	public int compararComperndos(Multa pMulta)
-	{
-		return 0;
-	}
-
-	public boolean estaDentroDeFecha(String f1, String f2)
-	{
-		return false;
-	}
-
-	public int compareTo(Multa pMulta) {
-
-		int num;
-
-		if(fecha.compareTo(pMulta.getFecha()) > 0)
-		{
-			num = 1;
-		}
-		else if(fecha.compareTo(pMulta.fecha) < 0)
-		{
-			num = -1;
-		}
-		else
-		{
-			if (id - pMulta.id < 0)
-			{
-				num = -1;
-			}
-			else 
-			{
-				num = 1;
-			}
-		}
-		// TODO Auto-generated method stub
-		return num;
-	}
-
-	public int compareToInfraccion(Multa pMulta)
-	{
-		int num;
-		if(infraccion.compareTo(pMulta.getInfraccion()) < 0)
-		{
-			num = -1;
-		}
-		else if(infraccion.compareTo(pMulta.getInfraccion()) > 0 )
-		{
-			num = 1;
-		}
-		else
-		{
-			num = 0;
-		}
-		return num;
-	}
-	
-	public int compareToLocalidad(Multa pMulta)
-	{
-		int num;
-		
-		if(localidad.compareTo(pMulta.getLocalidad()) < 0)
-		{
-			num = -1;
-		}
-		else if(localidad.compareTo(pMulta.getLocalidad()) > 0)
-		{
-			num = 1;
-		}
-		else
-		{
-			num = 0;
-		}
-		return num;
 	}
 
 }

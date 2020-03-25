@@ -31,7 +31,8 @@ public class Model {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private IListaDoblementeEncadenada<Multa> datos;
+	private e datos;
+	
 
 
 
