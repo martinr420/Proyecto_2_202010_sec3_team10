@@ -62,13 +62,7 @@ public class Controller {
 				switch (option) {
 
 				case 0:
-					
-					
-					modelo.darInfoCargaDatos();
-
-					
-					
-					
+					modelo.
 					break;
 
 				case 1:

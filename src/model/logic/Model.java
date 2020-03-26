@@ -13,13 +13,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
-import model.data_structures.ArregloDinamico;
-import model.data_structures.IArregloDinamico;
+import model.data_structures.AVLTreeST;
+import model.data_structures.HashLP;
+import model.data_structures.HashSC;
 import model.data_structures.ILinkedQueue;
-import model.data_structures.IListaDoblementeEncadenada;
 import model.data_structures.LinkedQueue;
-import model.data_structures.ListaDoblementeEncadenada;
-import model.data_structures.ListaDoblementeEncadenada.IteratorLista;
+import sun.util.resources.cldr.en.CalendarData_en_AS;
+import model.data_structures.MaxHeapCP;
 import model.data_structures.Nodo;
 import model.data_structures.noExisteObjetoException;
 
@@ -31,7 +31,9 @@ public class Model {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private e datos;
+	private HashSC hash;
+	private MaxHeapCP heap;
+	private AVLTreeST arbol;
 	
 
 
@@ -41,127 +43,80 @@ public class Model {
 	 */
 	public Model()
 	{
-		datos = new ListaDoblementeEncadenada<Multa>();
+		hash = new HashSC<>(10);
+		heap = new MaxHeapCP();
+		arbol = new AVLTreeST();
 
 
 	}
 
-	/**
-	 * Constructor del modelo del mundo con capacidad dada
-	 * @param tamano
-	 */
-	//	public Modelo(int capacidad)
-	//	{
-	//		//datos = new ArregloDinamico(capacidad);
-	//	}
+	
 
-	public ListaDoblementeEncadenada<Multa> darDatos()
-	{
-		return (ListaDoblementeEncadenada<Multa>) datos;
-	}
+	
 
-	/**
-	 * Servicio de consulta de numero de elementos presentes en el modelo 
-	 * @return numero de elementos presentes en el modelo
-	 */
-	public int darTamano()
-	{
-		return datos.darTamano();
-	}
-
-	/**
-	 * Requerimiento de agregar dato
-	 * @param dato
-	 */
-	public void agregar(Multa dato)
-	{	
-		datos.agregarNodoAlFinal(dato);;
-	}
-
-	/**
-	 * Requerimiento buscar dato
-	 * @param dato Dato a buscar
-	 * @return dato encontrado
-	 * @throws noExisteObjetoException 
-	 */
-	public int buscarPosicion(Multa dato) throws noExisteObjetoException
-	{
-		return datos.darPosicionNodo(dato);
-	}
-
-	/**
-	 * Requerimiento eliminar dato
-	 * @param dato Dato a eliminar
-	 * @return dato eliminado
-	 * @throws noExisteObjetoException 
-	 */
-	public Multa eliminar(Multa dato) throws noExisteObjetoException
-	{
-		return datos.EliminarNodoObj(dato);
-	}
-
+	
+	
 	private void cargarDatos() throws noExisteObjetoException 
 	{
-		String path = "./data/comparendos_dei_2018.geojson";
+		String path = "./data/comparendos.geojson";
 		JsonReader lector;
 
 
 		try {
-
-
-			datos = new ListaDoblementeEncadenada<>();
-
-
 			lector = new JsonReader(new FileReader(path));
 			JsonElement elem = JsonParser.parseReader(lector);
 			JsonObject ja = elem.getAsJsonObject();
 
 			JsonArray features = ja.getAsJsonArray("features");
 
-
 			for(JsonElement e : features)
 			{
-
-
-
 				JsonObject propiedades = (JsonObject) e.getAsJsonObject().get("properties");
+			
 				long id = propiedades.get("OBJECTID").getAsLong();
+				
 				String cadenaFecha = propiedades.get("FECHA_HORA").getAsString();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-				Date fecha = sdf.parse(cadenaFecha);
-				String medioDete = propiedades.getAsJsonObject().get("MEDIO_DETE").getAsString();
-				String claseVehiculo = propiedades.getAsJsonObject().get("CLASE_VEHI").getAsString();
-				String tipoServicio = propiedades.getAsJsonObject().get("TIPO_SERVI").getAsString();
+				String anio = cadenaFecha.substring(0,3);
+				String mes = cadenaFecha.substring(5,6);
+				String dia = cadenaFecha.substring(8,9);
+				String hora = cadenaFecha.substring(11,12);
+				String min = cadenaFecha.substring(14,15);
+				String seg = cadenaFecha.substring(17,18);
+				String fechaConcatenadita = anio + "-" + mes + dia + " " + hora + ":" + min + ":" + seg; 
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date fecha = sdf.parse(fechaConcatenadita);
+				
+				String medioDete = propiedades.getAsJsonObject().get("MEDIO_DETECCION").getAsString();
+				
+				String claseVehiculo = propiedades.getAsJsonObject().get("CLASE_VEHICULO").getAsString();
+				
+				String tipoServicio = propiedades.getAsJsonObject().get("TIPO_SERVICIO").getAsString();
+				
 				String infraccion = propiedades.getAsJsonObject().get("INFRACCION").getAsString();
-				String descripcion = propiedades.getAsJsonObject().get("DES_INFRAC").getAsString();
+				
+				String descripcion = propiedades.getAsJsonObject().get("DES_INFRACCION").getAsString();
+				
 				String localidad = propiedades.getAsJsonObject().get("LOCALIDAD").getAsString();
 
+				String municipio = propiedades.getAsJsonObject().get("MUNICIPIO").getAsString();
 
 				JsonObject geometry = (JsonObject) e.getAsJsonObject().get("geometry");
 
 				String tipo = geometry.get("type").getAsString();
 
+				
 				double[] listaCoords = new double[3];
-
 				JsonArray coordsJson = geometry.getAsJsonArray("coordinates");
-
-
-
-
 				for(int i = 0; i < coordsJson.size(); i ++)
 				{
 					listaCoords[i] = coordsJson.get(i).getAsDouble();
-
-
 				}
 
 				Geo geometria = new Geo(tipo, listaCoords);
 
-				Multa multa = new Multa(id, fecha, medioDete, claseVehiculo, tipoServicio, infraccion, descripcion, localidad, geometria);
+				Multa multa = new Multa(id, fecha, medioDete, claseVehiculo, tipoServicio, infraccion, descripcion, localidad, municipio, geometria);
 
-
-
-				datos.agregarNodoAlFinal(multa);
+				Gravedad grav = new Gravedad(tipoServicio, infraccion);
 
 
 			} //llave for grande

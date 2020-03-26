@@ -44,13 +44,12 @@ public class Multa implements Comparable<Multa>{
 	public String toString()
 	{
 
-		String msj ="El id es "+ id +" la fecha del comparendo "+ fecha 
+		String msj = "El id es "+ id +" la fecha del comparendo "+ fecha 
 				+" el medio de detencion es "+ medioDete +
 				" el vehiculo es "+ vehiculo +" el tipo de servicio es " + servicio + 
 				" la infraccion es " + infraccion + 
 				" la descripcion de lo sucedido es " + descripcion + " la localidad es "+
-				localidad +" la geografira es "+ geo.toString();
-
+				localidad + "el municipio es " + municipio + " la geografira es "+ geo.toString();
 
 		return msj;
 	}
@@ -125,6 +124,17 @@ public class Multa implements Comparable<Multa>{
 
 	public void setGeo(Geo geo) {
 		this.geo = geo;
+	}
+	
+	public String getMunicipio()
+	{
+		return municipio;
+	}
+
+	@Override
+	public int compareTo(Multa o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
