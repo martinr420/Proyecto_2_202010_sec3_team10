@@ -139,7 +139,7 @@ public class SequentialSearchST<Key, Value> {
 	 * @return all keys in the symbol table
 	 */
 	public Iterable<Key> keys()  {
-		LinkedQueue<Key> queue = new LinkedQueue<Key>();
+		Queue<Key> queue = new Queue<Key>();
 		for (Node x = first; x != null; x = x.next)
 			queue.enqueue(x.key);
 		return queue;

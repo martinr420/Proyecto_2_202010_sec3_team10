@@ -1,52 +1,38 @@
 package model.data_structures;
-
-public class HashSC<Key ,Value> {
-
+/**
+ * Tomado de https://github.com/kevin-wayne/algs4/blob/master/src/main/java/edu/princeton/cs/algs4/MaxPQ.java
+ */
+public class SeparateChainingHashST<Key, Value> implements IHashTable<Key, Value> {
 	private static final int INIT_CAPACITY = 4;
 
 	private int n;                                // number of key-value pairs
 	private int m;                                // hash table size
 	private SequentialSearchST<Key, Value>[] st;  // array of linked-list symbol tables
-	private int cantidadResize;
-	private Value primero;
-	private Value ultimo;
-	private int tamanoInicial;
-	private int tamanoFinal;
+
 
 	/**
 	 * Initializes an empty symbol table.
 	 */
-	
+	public SeparateChainingHashST() {
+		this(INIT_CAPACITY);
+	} 
 
 	/**
 	 * Initializes an empty symbol table with {@code m} chains.
 	 * @param m the initial number of chains
 	 */
-	public HashSC(int m) {
+	public SeparateChainingHashST(int m) {
 		this.m = m;
 		st = (SequentialSearchST<Key, Value>[]) new SequentialSearchST[m];
 		for (int i = 0; i < m; i++)
 			st[i] = new SequentialSearchST<Key, Value>();
-		cantidadResize = 0;
-		primero = null;
-		ultimo = null;
-		tamanoInicial = m;
-		tamanoFinal = m;
 	} 
 
 	// resize the hash table to have the given number of chains,
 	// rehashing all of the keys
-	private void resize() 
-	{
-		int temp1 = m;
-		m*=2;
-		while(!esPrimo(m))
-		{
-			m++;
-		}
-		int chains = m;
-		HashSC<Key, Value> temp = new HashSC<Key, Value>(chains);
-		for (int i = 0; i < temp1; i++) {
+	private void resize(int chains) {
+		SeparateChainingHashST<Key, Value> temp = new SeparateChainingHashST<Key, Value>(chains);
+		for (int i = 0; i < m; i++) {
 			for (Key key : st[i].keys()) {
 				temp.put(key, st[i].get(key));
 			}
@@ -54,8 +40,6 @@ public class HashSC<Key ,Value> {
 		this.m  = temp.m;
 		this.n  = temp.n;
 		this.st = temp.st;
-		cantidadResize++;
-		tamanoFinal = m;
 	}
 
 	// hash value between 0 and m-1
@@ -105,7 +89,6 @@ public class HashSC<Key ,Value> {
 	 */
 	public Value get(Key key) {
 		if (key == null) throw new IllegalArgumentException("argument to get() is null");
-		
 		int i = hash(key);
 		return st[i].get(key);
 	} 
@@ -122,26 +105,14 @@ public class HashSC<Key ,Value> {
 	 */
 	public void put(Key key, Value val) {
 		if (key == null) throw new IllegalArgumentException("first argument to put() is null");
-		if (val == null)
-		{
+		if (val == null) {
 			delete(key);
 			return;
 		}
-		// double table size if average length of list >= 10
-		if ((double)n/(double)m >= 0.5)
-			{
-			resize();
-			}
 
-		if(n == 0)
-		{
-			primero = val;
-			ultimo = val;
-		}
-		else
-		{
-			ultimo = val;
-		}
+		// double table size if average length of list >= 10
+		if (n >= 10*m) resize(2*m);
+
 		int i = hash(key);
 		if (!st[i].contains(key)) n++;
 		st[i].put(key, val);
@@ -154,28 +125,20 @@ public class HashSC<Key ,Value> {
 	 * @param  key the key
 	 * @throws IllegalArgumentException if {@code key} is {@code null}
 	 */
-	public Void delete(Key key)
-	{
-
-		if (key == null)
-		{
-			throw new IllegalArgumentException("argument to delete() is null");
-		}
+	public void delete(Key key) {
+		if (key == null) throw new IllegalArgumentException("argument to delete() is null");
 
 		int i = hash(key);
 		if (st[i].contains(key)) n--;
 		st[i].delete(key);
-		
-		
-		return null;
 
-		
-
+		// halve table size if average length of list <= 2
+		if (m > INIT_CAPACITY && n <= 2*m) resize(m/2);
 	} 
 
 	// return keys in symbol table as an Iterable
 	public Iterable<Key> keys() {
-		LinkedQueue<Key> queue = new LinkedQueue<Key>();
+		Queue<Key> queue = new Queue<Key>();
 		for (int i = 0; i < m; i++) {
 			for (Key key : st[i].keys())
 				queue.enqueue(key);
@@ -183,51 +146,9 @@ public class HashSC<Key ,Value> {
 		return queue;
 	} 
 
-	private boolean esPrimo(int num)
-	{
-		boolean esPrimo = true;
-		int otroNum = 2;
-		if(num % 2 == 0 || num < 2 && num >= 0) // verifica si el numero es par
-		{
-			esPrimo = false;
-		}
-		while(otroNum <= Math.sqrt(num) && num > 2 && esPrimo) 
-		{
-			if(num % otroNum == 0  )
-			{
-				esPrimo = false; 
-				break;
-			}
-			otroNum++;
-		}
-		return esPrimo;
-	}
-	
-	public int cantidadResize()
-	{
-		return cantidadResize;
-	}
-	public double factorCarga()
-	{
-		return (double)n / (double)m;
-	}
-	public Value primero()
-	{
-		return primero;
-	}
-	public Value ultimo()
-	{
-		return ultimo;
-	}
-	public int tamanoInicial()
-	{
-		return tamanoInicial;
-	}
-	public int tamanoFinal()
-	{
-		return tamanoFinal;
-	}
 }
+
+
 
 
 

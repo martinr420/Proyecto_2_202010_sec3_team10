@@ -20,7 +20,9 @@ import model.data_structures.ILinkedQueue;
 import model.data_structures.LinkedQueue;
 import sun.util.resources.cldr.en.CalendarData_en_AS;
 import model.data_structures.MaxHeapCP;
+import model.data_structures.MaxPQ;
 import model.data_structures.Nodo;
+import model.data_structures.SeparateChainingHashST;
 import model.data_structures.noExisteObjetoException;
 
 /**
@@ -31,9 +33,9 @@ public class Model {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private HashSC hash;
-	private MaxHeapCP heap;
-	private AVLTreeST arbol;
+	private SeparateChainingHashST hash;
+	private MaxPQ heap;
+	private AVLTreeST<Gravedad, Multa> arbol; // metodo 1
 	
 
 
@@ -43,8 +45,8 @@ public class Model {
 	 */
 	public Model()
 	{
-		hash = new HashSC<>(10);
-		heap = new MaxHeapCP();
+		hash = new SeparateChainingHashST();
+		heap = new MaxPQ();
 		arbol = new AVLTreeST();
 
 

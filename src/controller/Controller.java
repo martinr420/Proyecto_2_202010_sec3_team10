@@ -3,8 +3,7 @@ package controller;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import model.data_structures.ListaDoblementeEncadenada;
-import model.data_structures.ListaDoblementeEncadenada.IteratorLista;
+
 import model.data_structures.noExisteObjetoException;
 import model.logic.Localidad;
 import model.logic.Model;
@@ -62,7 +61,7 @@ public class Controller {
 				switch (option) {
 
 				case 0:
-					modelo.
+					modelo.darInfoCargaDatos();
 					break;
 
 				case 1:
