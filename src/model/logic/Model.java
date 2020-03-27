@@ -37,7 +37,9 @@ public class Model {
 	private AVLTreeST<LlaveFechaHora, Multa> arbol3A; 
 	private MaxPQ<CercanoALaEstacion> heap1B;
 	private LinearProbingHashST<Llave2B, Valor2B> hash2B;
+	private AVLTreeST<Geo, Multa> arbol3B;
 
+	
 
 
 
@@ -52,7 +54,7 @@ public class Model {
 		arbol3A = new AVLTreeST<LlaveFechaHora, Multa>();
 		heap1B = new MaxPQ<CercanoALaEstacion>();
 		hash2B = new LinearProbingHashST<Llave2B, Valor2B>();
-		arbol3A = new AVLTreeST<>();
+		arbol3B = new AVLTreeST<Geo, Multa>();
 		
 
 
@@ -184,7 +186,32 @@ public class Model {
 
 	public MaxPQ<CercanoALaEstacion> comparendosMasCercanos()
 	{
-		return null
+		return null;
+	}
+	
+	public Iterable<Multa> reque2B()
+	{
+		return null;
+	}
+	
+	public AVLTreeST<Geo, Multa> darMultasLatitudMinMax(double min, double max, String vehiculo)
+	{
+		return null;
+	}
+	
+	public void reque1C(int intervalo)
+	{
+		
+	}
+	
+	public void reque2C()
+	{
+		
+	}
+	
+	public void reque1C()
+	{
+		
 	}
 
 

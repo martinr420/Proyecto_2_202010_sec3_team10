@@ -1,6 +1,6 @@
 package model.logic;
 
-public class Geo {
+public class Geo implements Comparable<Geo> {
 
 	
 	
@@ -50,5 +50,16 @@ public class Geo {
 				+ ", " + coordenadas[1] + ", " + coordenadas[2]+ ".";
 		
 		return msj;
+	}
+
+	@Override
+	public int compareTo(Geo o) 
+	{
+		int num = 0;
+		
+		if(getLatitud() < o.getLatitud()) num = -1;
+		else if(getLatitud() > o.getLatitud()) num = 1;
+		
+		return num;
 	}
 }
