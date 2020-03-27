@@ -2,8 +2,13 @@ package model.logic;
 
 import java.util.Date;
 
-public class Multa implements Comparable<Multa>{
+public class Multa implements Comparable<Multa>
+{
 
+	//CONSTANTES
+	
+	
+	//Atributos
 	private long id;
 
 	private Date fecha;
@@ -21,13 +26,16 @@ public class Multa implements Comparable<Multa>{
 	private String localidad;
 
 	private String municipio;
-	
+
 	private Geo geo;
+	
+
 
 
 
 	public Multa(long id, Date fecha, String medioDete, String vehiculo, String servicio, String infraccion,
-			String descripcion, String localidad, String municipio, Geo geo) {
+			String descripcion, String localidad, String municipio, Geo geo) 
+	{
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -39,6 +47,10 @@ public class Multa implements Comparable<Multa>{
 		this.localidad = localidad;
 		this.municipio = municipio;
 		this.geo = geo;
+		
+		
+		
+		
 	}
 
 	public String toString()
@@ -125,16 +137,36 @@ public class Multa implements Comparable<Multa>{
 	public void setGeo(Geo geo) {
 		this.geo = geo;
 	}
-	
+
 	public String getMunicipio()
 	{
 		return municipio;
 	}
 
 	@Override
-	public int compareTo(Multa o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int compareTo(Multa o)
+	{
+		int comparacion = 0;
+		if(servicio.compareTo(o.getServicio()) > 0)
+		{
+			comparacion = 1;
+		}
+		else if( servicio.compareTo(o.getServicio()) < 0)
+		{
+			comparacion = -1;
+		}
+		else
+		{
+			if(infraccion.compareTo(o.getInfraccion()) > 0)
+			{
+				comparacion = 1;
+			}
+			else if(infraccion.compareTo(o.getInfraccion()) < 0)
+			{
+				comparacion = -1;
+			}
+		}
+		return comparacion;
 	}
 
 }

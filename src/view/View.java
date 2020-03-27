@@ -22,16 +22,16 @@ public class View
         System.out.println(  " **==========================**");
         System.out.println(" ||      ==== MENU ====      ||");
 
-        System.out.println( " ||" +  " 0. Cargar datos   "  + "       ||");
-        System.out.println( " ||" +  " 1. Obtener M comparendos mayor gravedad"  + "        ||");
+        System.out.println( " ||" +  " 0. Cargar datos   "  + "||");
+        System.out.println( " ||" +  " 1. Obtener M comparendos mayor gravedad"  + " ||");
         System.out.println( " ||" + " 2. Consultar Comparendos por mes y dia de la semana " + " ||");
-        System.out.println("||" + "3. Buscar comparendos fecha hora localidad");
-        System.out.println("||" + "4. buscar los M comparendos mas cercanos a la estacion de policia");
-        System.out.println("|| 5. Bucar los comparendos medio dete, clase vehiculo, tipo servi, y localidad");
-        System.out.println("|| 6. buscar comparendos latitud y tipo vehiculo");
-        System.out.println("|| 7. Visualizar datos ASCII");
-        System.out.println("|| 8. Costo tiempos de espera.");
-        System.out.println("|| 10. Costo tiempos de espera nuevo sistema");
+        System.out.println("||" + "3. Buscar comparendos fecha hora localidad  ||");
+        System.out.println("||" + "4. buscar los M comparendos mas cercanos a la estacion de policia ||");
+        System.out.println("|| 5. Bucar los comparendos medio dete, clase vehiculo, tipo servi, y localidad  ||");
+        System.out.println("|| 6. buscar comparendos latitud y tipo vehiculo  ||");
+        System.out.println("|| 7. Visualizar datos ASCII  ||");
+        System.out.println("|| 8. Costo tiempos de espera.  ||");
+        System.out.println("|| 10. Costo tiempos de espera nuevo sistema  ||");
         System.out.println( " **==========================**\n");
 
         // display hint
@@ -63,7 +63,8 @@ public class View
     /**
      * Print option 0 menu.
      */
-    public void displayOp0Menu(String mensaje) {
+    public void displayOp0Menu(String mensaje)
+    {
         System.out.println( "====== Cargar datos ======");
         System.out.println(mensaje);
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");

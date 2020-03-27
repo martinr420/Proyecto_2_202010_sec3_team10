@@ -56,176 +56,22 @@ public class Controller {
 
 			while (!end) {
 				view.displayMenu();
-				
+
 				int option = reader.nextInt();
 				switch (option) {
 
 				case 0:
-					modelo.darInfoCargaDatos();
-					break;
 
+					view.displayOp0Menu(modelo.darInfoCargaDatos());
+
+					break;
 				case 1:
-					// Display option 1
+					
 					view.displayOp1Menu();
-					String loc = reader.next();
-					Multa laMulta = modelo.darComparendoLocalidad(loc);
-					
-					view.displayOp1Data(laMulta.toString());
-					
-					
-					
-					break;
-
-				case 2:
-					view.displayOp2Menu();
-					String anio = reader.next();
-					view.displayOp21Menu();
-					String mes = reader.next();
-					view.displayOp23menu();
-					String dia = reader.next();
-					String fecha = anio + "/"  + mes + "/" + dia;
-					
-					
-					ListaDoblementeEncadenada<Multa> lista = modelo.darMultaPorFecha(fecha);
-					long tamano = lista.darTamano();
-					view.displayOp2Data(fecha, tamano);
-					view.preioneOk();
-					if(reader.next().compareToIgnoreCase("ok") == 0)
-					{
-						IteratorLista iter = (IteratorLista) lista.iterator();
-						while(iter.hasNext())
-						{
-							Comparable multa = (Comparable) iter.next();
-							System.out.println(multa.toString());
-						}
-						System.out.println("=================================================================================================");
-						
-						
-					}
-					System.out.println("no digito ok :'(");
-					
-					
-					
 
 					break;
-					
-				case 3:
-					view.displayOp3Menu();
-					String anio2 = reader.next();
-					view.displayOp21Menu();
-					String mes2 = reader.next();
-					view.displayOp23menu();
-					String dia2 = reader.next();
-					String fecha2 = anio2 + "/"  + mes2 + "/" + dia2;
-					
-					view.displayOp31Menu();
-					String anio3 = reader.next();
-					view.displayOp21Menu();
-					String mes3 = reader.next();
-					view.displayOp23menu();
-					String dia3 = reader.next();
-					String fecha3 = anio3 + "/" + mes3 + "/" + dia3;
-					
-					
-					
-					
-					modelo.darMultasComparacion(fecha2, fecha3);
-							
-				
-					view.displayOp3Menu();
-					
-					break;
-					
-					
-				case 4:
-					view.displayOp4Menu();
-					String pInfraccion =reader.next();
-					Multa laMulta4 = modelo.ConsultarComparendoPorInfraccion(pInfraccion);
-					
-					
-					view.displayOp4Data(laMulta4.toString());
-					break;
-					
-				case 5:
-					view.displayOp5Menu();
-					String laInfra = reader.next();
-					
-					ListaDoblementeEncadenada<Multa> laLista = modelo.darComparendosPorInfraccion(laInfra);
-					IteratorLista iter = (IteratorLista) laLista.iterator();
-					
-					System.out.println("El total de Comparendos es de :" + laLista.darTamano());
-					
-					System.out.println("Presione ok");
-					
-					if(reader.next().equals("ok"))
-					{
-						while(iter.hasNext())
-						{
-							Multa laMu = (Multa) iter.next();
-							System.out.println(laMu.toString());
-						}
-					}
-					
-				
-					break;
-				case 6:
-					view.diplayOp6Menu();
-					modelo.darMultasComparacionTipoServicio();
-					break;
-				case 7:
-					reader.nextLine();
-					System.out.println("Ingrese la localidad");
-					String localidad = reader.nextLine();
-					System.out.println("Ingrese la fecha inicial");
-					String fechaInicial = reader.nextLine();
-					System.out.println("Ingrese la fecha final");
-					String fechaFinal = reader.nextLine();
-					modelo.comparendosEntreFechas(fechaInicial, fechaFinal, localidad);
-					break;
-					
-				case 8:
-				
-				reader.nextLine();
-				System.out.println("Ingrese la fecha inicial");
-				String fechaInicial1 = reader.nextLine();
-				System.out.println("Ingrese la fecha final");
-				String fechaInicial2 = reader.nextLine();
-				System.out.println("Ingrese el numero de codigos");
-				String elN = reader.nextLine();
-				modelo.darMultasOrdenadasN(elN, fechaInicial1, fechaInicial2);
-				break;
-				
-				
-				case 10:
-					view.displayOp10Menu();
-					
-					ListaDoblementeEncadenada<Localidad> localidades = modelo.ASCII();
-					System.out.println(localidades.darTamano());
-					IteratorLista iterLoc = (IteratorLista) localidades.iterator();
-					
-					while(iterLoc.hasNext())
-					{
-						Localidad loquis = (Localidad) iterLoc.next();
-						int cantidad = loquis.getCantidadComparendos()/50;
-						String asteriscos = "";
-						if(cantidad == 0)
-						{
-							System.out.println(loquis.getNombre() + " | " + "sin comparendos");
-						}
-						for (int i = 0; i < cantidad; i++)
-						{
-							asteriscos += "*";
-						}
-						if((cantidad % 50) > 0)
-						{
-							asteriscos += "*";
-						}
-						
-						System.out.println(loquis.getNombre() + " | " + asteriscos );
-					}
 
-					break;
-					// Invalid option
+
 				default:
 					view.badOption();
 					end = true;
