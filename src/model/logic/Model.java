@@ -14,12 +14,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
 import model.data_structures.AVLTreeST;
-import model.data_structures.HashLP;
-import model.data_structures.HashSC;
-import model.data_structures.ILinkedQueue;
-import model.data_structures.LinkedQueue;
+import model.data_structures.LinearProbingHashST;
 import sun.util.resources.cldr.en.CalendarData_en_AS;
-import model.data_structures.MaxHeapCP;
+
 import model.data_structures.MaxPQ;
 import model.data_structures.Nodo;
 import model.data_structures.Queue;
@@ -37,9 +34,9 @@ public class Model {
 	private Queue<Multa> datos; 
 	private SeparateChainingHashST<LlaveMesDIa, Multa> hash2A;
 	private MaxPQ<Multa> heap1A;
-	private AVLTreeST<LlaveFechaHora, Multa> arbol3A; // metodo 1
+	private AVLTreeST<LlaveFechaHora, Multa> arbol3A; 
 	private MaxPQ<CercanoALaEstacion> heap1B;
-	private LinearProbingHashST<Llave2B, Valor2B>
+	private LinearProbingHashST<Llave2B, Valor2B> hash2B;
 
 
 
@@ -53,6 +50,10 @@ public class Model {
 		hash2A = new SeparateChainingHashST<LlaveMesDIa, Multa>(100);
 		heap1A= new MaxPQ<Multa>(100);
 		arbol3A = new AVLTreeST<LlaveFechaHora, Multa>();
+		heap1B = new MaxPQ<CercanoALaEstacion>();
+		hash2B = new LinearProbingHashST<Llave2B, Valor2B>();
+		arbol3A = new AVLTreeST<>();
+		
 
 
 	}
@@ -145,7 +146,7 @@ public class Model {
 				mayor = actual;
 			}
 		}
-		
+
 		return mayor;
 
 	}
@@ -180,13 +181,13 @@ public class Model {
 	{
 		return null;
 	}
-	
+
 	public MaxPQ<CercanoALaEstacion> comparendosMasCercanos()
 	{
 		return null
 	}
-	
-	
+
+
 
 
 
