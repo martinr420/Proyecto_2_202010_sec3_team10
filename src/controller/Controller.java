@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 
 import model.data_structures.noExisteObjetoException;
-import model.logic.Localidad;
 import model.logic.Model;
 import model.logic.Multa;
 import view.View;

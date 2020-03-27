@@ -214,9 +214,4 @@ public class Model {
 		
 	}
 
-
-
-
-
-
 }//llave clase
