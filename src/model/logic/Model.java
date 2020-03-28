@@ -27,15 +27,17 @@ import model.data_structures.noExisteObjetoException;
  * Definicion del modelo del mundo
  *
  */
-public class Model {
+public class Model
+{
 	/**
 	 * Atributos del modelo del mundo
 	 */
 	private Queue<Multa> datos; 
+	private MaxPQ<Multa> heapMayorID;
 	private SeparateChainingHashST<LlaveMesDIa, Multa> hash2A;
 	private MaxPQ<Multa> heap1A;
 	private AVLTreeST<LlaveFechaHora, Multa> arbol3A; 
-	private MaxPQ<CercanoALaEstacion> heap1B;
+	private MaxPQ<Multa> heap1B;
 	private LinearProbingHashST<Llave2B, Valor2B> hash2B;
 	private AVLTreeST<Geo, Multa> arbol3B;
 
@@ -49,15 +51,22 @@ public class Model {
 	public Model()
 	{
 		datos = new Queue<Multa>();
-		hash2A = new SeparateChainingHashST<LlaveMesDIa, Multa>(100);
-		heap1A= new MaxPQ<Multa>(100);
-		arbol3A = new AVLTreeST<LlaveFechaHora, Multa>();
-		heap1B = new MaxPQ<CercanoALaEstacion>();
-		hash2B = new LinearProbingHashST<Llave2B, Valor2B>();
-		arbol3B = new AVLTreeST<Geo, Multa>();
 		
-
-
+		heapMayorID = new MaxPQ<Multa>(100);
+		
+		ComparadorGravedad c = new ComparadorGravedad();
+		heap1A= new MaxPQ<Multa>(100, c);
+		
+		hash2A = new SeparateChainingHashST<LlaveMesDIa, Multa>(100);
+		
+		arbol3A = new AVLTreeST<LlaveFechaHora, Multa>();
+		
+		ComparadorCercanoALaEstacion cc = new ComparadorCercanoALaEstacion();
+		heap1B = new MaxPQ<Multa>(100, cc);
+		
+		hash2B = new LinearProbingHashST<Llave2B, Valor2B>(100);
+		
+		arbol3B = new AVLTreeST<Geo, Multa>();
 	}
 
 
@@ -121,6 +130,9 @@ public class Model {
 
 				Multa multa = new Multa(id, fecha, medioDete, claseVehiculo, tipoServicio, infraccion, descripcion, localidad, municipio, geometria);
 
+				heapMayorID.insert(multa);
+				datos.enqueue(multa);
+				
 
 			} //llave for grande
 
@@ -132,28 +144,9 @@ public class Model {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	} 
-
-	private Multa mayorID()
-	{
-		Multa mayor = new Multa(-1, null, "","","","","","", "", null);
-		datos.enqueue(mayor);
-
-		for(int i = 0; i < datos.size(); i++)
-		{
-			Multa actual = datos.dequeue();
-			datos.enqueue(actual);
-			if(mayor.getId() < actual.getId())
-			{
-				mayor = actual;
-			}
-		}
-
-		return mayor;
-
 	}
-
-
+	
+	
 	public String darInfoCargaDatos() throws noExisteObjetoException
 	{
 		String msj = "";
@@ -161,9 +154,9 @@ public class Model {
 		long inicio = System.currentTimeMillis();
 		cargarDatos();
 		long fin = System.currentTimeMillis();
-		msj += "el tiempo total de carga en milis es de " + (fin - inicio) + "ms <br>";
-		msj += "La cantidad de comparendos es de: " + datos.size();
-		msj += "El comparendo con el ID mas alto es :" + mayorID().toString();
+		msj += "el tiempo total de carga en milis es de " + (fin - inicio) + "ms \n";
+		msj += "La cantidad de comparendos es de: " + datos.size() +"\n";
+		msj += "El comparendo con el ID mas alto es :" + heapMayorID.max().toString() + "\n";
 
 		return msj;
 	}
@@ -184,7 +177,7 @@ public class Model {
 		return null;
 	}
 
-	public MaxPQ<CercanoALaEstacion> comparendosMasCercanos()
+	public MaxPQ<Multa> comparendosMasCercanos()
 	{
 		return null;
 	}

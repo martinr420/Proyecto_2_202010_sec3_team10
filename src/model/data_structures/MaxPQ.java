@@ -37,7 +37,7 @@ public class MaxPQ<Key extends Comparable<Key>> implements Iterable<Key>, IMaxCo
      */
     public MaxPQ(int initCapacity, Comparator<Key> comparator) {
         this.comparator = comparator;
-        pq = (Key[]) new Object[initCapacity + 1];
+        pq = (Key[]) new Comparable[initCapacity + 1];
         n = 0;
     }
 

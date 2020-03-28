@@ -147,25 +147,16 @@ public class Multa implements Comparable<Multa>
 	public int compareTo(Multa o)
 	{
 		int comparacion = 0;
-		if(servicio.compareTo(o.getServicio()) > 0)
+		
+		if(id > o.getId())
 		{
 			comparacion = 1;
 		}
-		else if( servicio.compareTo(o.getServicio()) < 0)
+		else if( id < o.getId())
 		{
 			comparacion = -1;
 		}
-		else
-		{
-			if(infraccion.compareTo(o.getInfraccion()) > 0)
-			{
-				comparacion = 1;
-			}
-			else if(infraccion.compareTo(o.getInfraccion()) < 0)
-			{
-				comparacion = -1;
-			}
-		}
+		
 		return comparacion;
 	}
 
