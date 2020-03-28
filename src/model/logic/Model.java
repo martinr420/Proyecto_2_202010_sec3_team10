@@ -90,15 +90,16 @@ public class Model
 				long id = propiedades.get("OBJECTID").getAsLong();
 
 				String cadenaFecha = propiedades.get("FECHA_HORA").getAsString();
-				String anio = cadenaFecha.substring(0,3);
-				String mes = cadenaFecha.substring(5,6);
-				String dia = cadenaFecha.substring(8,9);
-				String hora = cadenaFecha.substring(11,12);
-				String min = cadenaFecha.substring(14,15);
-				String seg = cadenaFecha.substring(17,18);
+				String anio = cadenaFecha.substring(0,4);
+				String mes = cadenaFecha.substring(5,7);
+				String dia = cadenaFecha.substring(8,10);
+				String hora = cadenaFecha.substring(11,13);
+				String min = cadenaFecha.substring(14,16);
+				String seg = cadenaFecha.substring(17,19);
 				String fechaConcatenadita = anio + "-" + mes +"-"+ dia + " " + hora + ":" + min + ":" + seg; 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date fecha = sdf.parse(fechaConcatenadita);
+				
 
 				String medioDete = propiedades.getAsJsonObject().get("MEDIO_DETECCION").getAsString();
 
@@ -132,7 +133,7 @@ public class Model
 
 				heapMayorID.insert(multa);
 				datos.enqueue(multa);
-				
+				heap1A.insert(multa);
 
 			} //llave for grande
 
