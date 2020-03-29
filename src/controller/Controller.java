@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,7 +66,12 @@ public class Controller {
 
 				case 0:
 
-					view.displayOp0Menu(modelo.darInfoCargaDatos());
+					try {
+						view.displayOp0Menu(modelo.darInfoCargaDatos());
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						System.out.println("no se encontro el archivo");;
+					}
 
 					break;
 				case 1:

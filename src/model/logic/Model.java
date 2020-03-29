@@ -1,7 +1,11 @@
 package model.logic;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import com.sun.org.apache.xerces.internal.impl.io.UTF8Reader;
 
 import model.data_structures.AVLTreeST;
 import model.data_structures.LinearProbingHashST;
@@ -72,14 +77,17 @@ public class Model
 	}
 
 
-	private void cargarDatos() throws noExisteObjetoException 
+	private void cargarDatos() throws noExisteObjetoException, FileNotFoundException 
 	{
 		String path = "./data/comparendos.geojson";
 		JsonReader lector;
+		InputStream inputstream = new FileInputStream(path);
 
 
 		try {
-			lector = new JsonReader(new FileReader(path));
+			
+//			lector = new JsonReader(new FileReader(path));
+			lector = new JsonReader(new InputStreamReader(inputstream, "UTF-8"));
 			JsonElement elem = JsonParser.parseReader(lector);
 			JsonObject ja = elem.getAsJsonObject();
 
@@ -198,7 +206,7 @@ public class Model
 	}
 
 
-	public String darInfoCargaDatos() throws noExisteObjetoException
+	public String darInfoCargaDatos() throws noExisteObjetoException, FileNotFoundException
 	{
 		String msj = "";
 
