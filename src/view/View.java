@@ -82,7 +82,7 @@ public class View
      * Print option 1 menu.
      */
     public void displayOp1Menu() {
-        System.out.println( "====== Obtener Comparendos COn mayor gravedad  ======");
+        System.out.println( "====== Obtener Comparendos n mayor gravedad  ======");
         System.out.println("digite el Numero de comparendos");
         
 
@@ -113,17 +113,15 @@ public class View
     }
     public void displayOp21Menu()
     {
-    	 System.out.println("Digite el dia de la semana");
-         
+    	 System.out.println("Digite el dia de la semana.");
     }
     
     
     /**
      * Print option 2 data.
      */
-    public void displayOp2Data(String comparendos, long total) {
-
-        System.out.println( "La cantidad de comparendos es: " + total);
+    public void displayOp2Data(String comparendos) 
+    {
         
         System.out.println(comparendos);
        
@@ -134,11 +132,11 @@ public class View
     public void displayOp3Menu()
     {
     	System.out.println("===== Buscar Comparendos fecha y hora =====");
-    	System.out.println("Digite el limite inferior en formato (YYYY/MM/DD-HH:MM:ss)");
+    	System.out.println("Digite el limite inferior en formato (YYYY-MM-DD HH:MM:ss)");
     }
     public void displayOp31Menu()
     {
-    	System.out.println("digite el limite superior en el mismo formato (YYYY/MM/DD-HH:MM:ss)");
+    	System.out.println("digite el limite superior en el mismo formato (YYYY-MM-DD HH:MM:ss)");
     }
     
     public void displayOp32Menu()
@@ -181,25 +179,25 @@ public class View
     	System.out.println("Digite la localidad");
     }
     
-    public void displayDataOp5(String dete, String clase, String servicio, String localidad, String comparendos)
+    public void displayOp5Data(String dete, String clase, String servicio, String localidad, String comparendos)
     {
     	System.out.println("los comparendos con los datos: " + dete +" "+ clase +" "+ servicio +" "+localidad);
     	System.out.println(comparendos);
     }
     
-    public void displayOpMenu6()
+    public void displayOp6Menu()
     {
     	System.out.println("==================== dar comparendos por latitud y tipo servicio ====================");
     	System.out.println("Digite la latitud minima");
     }
-    public void displayOpMenu61()
+    public void displayOp61Menu()
     {
     	System.out.println("Digite la latitud maxima");
     }
     
-    public void displayOpMenu62()
+    public void displayOp62Menu()
     {
-    	System.out.println("Digite el tipo de servicio");
+    	System.out.println("Digite el tipo de vehiculo");
     }
     public void displayOpData6(double latMin, double latMax, String servi, String comparendos)
     {

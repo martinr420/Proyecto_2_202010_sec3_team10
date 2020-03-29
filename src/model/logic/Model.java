@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -15,10 +17,7 @@ import com.google.gson.stream.JsonReader;
 
 import model.data_structures.AVLTreeST;
 import model.data_structures.LinearProbingHashST;
-import sun.util.resources.cldr.en.CalendarData_en_AS;
-
 import model.data_structures.MaxPQ;
-import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.SeparateChainingHashST;
 import model.data_structures.noExisteObjetoException;
@@ -29,19 +28,22 @@ import model.data_structures.noExisteObjetoException;
  */
 public class Model
 {
+	//Constantes
+	
+	
 	/**
 	 * Atributos del modelo del mundo
 	 */
 	private Queue<Multa> datos; 
 	private MaxPQ<Multa> heapMayorID;
-	private SeparateChainingHashST<LlaveMesDIa, Multa> hash2A;
+	private SeparateChainingHashST<LlaveMesDIa, ValorMesDia> hash2A;
 	private MaxPQ<Multa> heap1A;
-	private AVLTreeST<LlaveFechaHora, Multa> arbol3A; 
+	private AVLTreeST<Date, Multa> arbol3A; 
 	private MaxPQ<Multa> heap1B;
 	private LinearProbingHashST<Llave2B, Valor2B> hash2B;
-	private AVLTreeST<Geo, Multa> arbol3B;
+	private AVLTreeST<Double, Multa> arbol3B;
 
-	
+
 
 
 
@@ -51,22 +53,22 @@ public class Model
 	public Model()
 	{
 		datos = new Queue<Multa>();
-		
-		heapMayorID = new MaxPQ<Multa>(100);
-		
+
+		heapMayorID = new MaxPQ<Multa>(31);
+
 		ComparadorGravedad c = new ComparadorGravedad();
-		heap1A= new MaxPQ<Multa>(100, c);
-		
-		hash2A = new SeparateChainingHashST<LlaveMesDIa, Multa>(100);
-		
-		arbol3A = new AVLTreeST<LlaveFechaHora, Multa>();
-		
+		heap1A= new MaxPQ<Multa>(31, c);
+
+		hash2A = new SeparateChainingHashST<LlaveMesDIa, ValorMesDia>(1);
+
+		arbol3A = new AVLTreeST<Date, Multa>();
+
 		ComparadorCercanoALaEstacion cc = new ComparadorCercanoALaEstacion();
-		heap1B = new MaxPQ<Multa>(100, cc);
-		
-		hash2B = new LinearProbingHashST<Llave2B, Valor2B>(100);
-		
-		arbol3B = new AVLTreeST<Geo, Multa>();
+		heap1B = new MaxPQ<Multa>(31, cc);
+
+		hash2B = new LinearProbingHashST<Llave2B, Valor2B>(31);
+
+		arbol3B = new AVLTreeST<Double, Multa>();
 	}
 
 
@@ -99,7 +101,7 @@ public class Model
 				String fechaConcatenadita = anio + "-" + mes +"-"+ dia + " " + hora + ":" + min + ":" + seg; 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date fecha = sdf.parse(fechaConcatenadita);
-				
+
 
 				String medioDete = propiedades.getAsJsonObject().get("MEDIO_DETECCION").getAsString();
 
@@ -131,23 +133,71 @@ public class Model
 
 				Multa multa = new Multa(id, fecha, medioDete, claseVehiculo, tipoServicio, infraccion, descripcion, localidad, municipio, geometria);
 
+				
 				heapMayorID.insert(multa);
 				datos.enqueue(multa);
 				heap1A.insert(multa);
+				heap1B.insert(multa);
 
+				Calendar c = Calendar.getInstance();
+				int anioC = Integer.parseInt(anio);
+				int mesC = Integer.parseInt(mes);
+				int diaC = Integer.parseInt(dia);
+				Calendar calendario = Calendar.getInstance();
+				calendario.set(Calendar.YEAR, anioC);
+				calendario.set(Calendar.MONTH, mesC);
+				calendario.set(Calendar.DATE, diaC);
+
+				int diaSemana = calendario.get(Calendar.DAY_OF_WEEK);
+
+				LlaveMesDIa llaveMesDia = new LlaveMesDIa(mesC, diaSemana);
+
+				ValorMesDia v = hash2A.get(llaveMesDia);
+				
+				if( v != null)
+				{
+					v.multas.enqueue(multa);
+				}
+				else
+				{
+					ValorMesDia valor = new ValorMesDia();
+					valor.multas.enqueue(multa);
+					hash2A.put(llaveMesDia, valor);
+				}
+				
+				arbol3A.put(fecha, multa);
+				
+				Llave2B l2b = new Llave2B(medioDete, claseVehiculo, tipoServicio, localidad);
+				Valor2B v2b = hash2B.get(l2b);
+				if(v2b != null)
+				{
+					v2b.multas.enqueue(multa);
+					System.out.println(medioDete +" "+ claseVehiculo +" "+ tipoServicio +" "+ localidad);
+				}
+				else
+				{
+					Valor2B val2B = new Valor2B();
+					val2B.multas.enqueue(multa);
+					hash2B.put(l2b, val2B);
+				}
+				double lati = geometria.getLatitud();
+				arbol3B.put(lati, multa);
 			} //llave for grande
+			
 
 		}//llave try
 		catch (IOException e) 
 		{
-			e.printStackTrace();
-		} catch (ParseException e1) {
+			System.out.println("No se encontro el archivo de carga");;
+		} catch (ParseException e1) 
+		
+		{
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println("La fecha no esta en el formato correcto");;
 		}
 	}
-	
-	
+
+
 	public String darInfoCargaDatos() throws noExisteObjetoException
 	{
 		String msj = "";
@@ -155,57 +205,177 @@ public class Model
 		long inicio = System.currentTimeMillis();
 		cargarDatos();
 		long fin = System.currentTimeMillis();
-		msj += "el tiempo total de carga en milis es de " + (fin - inicio) + "ms \n";
+		msj += "El tiempo total de carga en milis es de " + (fin - inicio) + "ms \n";
 		msj += "La cantidad de comparendos es de: " + datos.size() +"\n";
-		msj += "El comparendo con el ID mas alto es :" + heapMayorID.max().toString() + "\n";
+		msj += "El comparendo con el ID mas alto es: " + heapMayorID.max().toString() + "\n";
 
 		return msj;
 	}
 
 
-	public MaxPQ<Multa> mayorGravedad(int m)
+	public String mayorGravedad(int m)
 	{
-		return null;
+		String msj = "";
+
+		for(int i = 1; i <= m; i++)
+		{
+			msj += i + "." + heap1A.delMax().toString()+ "\n"; 
+		}
+
+		return msj;
 	}
 
-	public SeparateChainingHashST<LlaveMesDIa, ValorMesDia> mesDia(int pMes, char pDia)
+	public String mesDia(int pMes, String dia)
 	{
-		return null;
+		String msj = "";
+		LlaveMesDIa llave = new LlaveMesDIa(pMes, dia);
+		ValorMesDia v = hash2A.get(llave);
+
+		if(v == null ) 
+		{
+			return "No hay comparendos con los datos indicados";
+		}
+
+		else
+		{
+			for(int i = 1; i <= v.multas.size(); i++)
+			{
+				Multa multa = v.multas.dequeue();
+				msj += i +". " + multa.toString() + "\n" ; 
+				v.multas.enqueue(multa);
+			}
+		}
+		return msj;
+
+	}
+	public String mesDia(int pMes, int pDia)
+	{
+		String dia;
+		switch (pDia)
+		{
+		case 1:
+			dia = "D";
+			break;
+		case 2: 
+			dia  = "L";
+			break;
+		case 3 :
+			dia = "M";
+			break;
+		case 4 : 
+			dia = "I";
+			break;
+		case 5 : 
+			dia = "J";
+			break;
+		case 6 : 
+			dia = "V";
+			break;
+		case 7 : 
+			dia = "S";
+			break;
+		}
+
+		String msj = "";
+		LlaveMesDIa llave = new LlaveMesDIa(pMes, pDia);
+		ValorMesDia v = hash2A.get(llave);
+
+		if(v == null ) 
+		{
+			return "No hay comparendos con los datos indicados";
+		}
+
+		else
+		{
+			for(int i = 1; i <= v.multas.size(); i++)
+			{
+				msj += i +". " + v.multas.dequeue().toString() + "\n" ; 
+			}
+		}
+		return msj;
+
 	}
 
-	public Iterable<Multa> fechaHoraLoc(Date min, Date max, String localidad)
+	public String fechaHoraLoc(String min, String max, String localidad) throws ParseException
 	{
-		return null;
+		String msj = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date fMin = sdf.parse(min);
+		Date fMax = sdf.parse(max);
+	
+		
+		Queue<Date> q = (Queue) arbol3A.keys(fMin, fMax);
+		int tam = q.size();
+		if(tam == 0) return "no hay comparendos";
+		for(int i = 1; i <= tam; i++ )
+		{
+			Multa m = arbol3A.get(q.dequeue());
+			if(m.getLocalidad().compareToIgnoreCase(localidad) == 0 )
+			{
+				msj += m.toString() + "\n";
+			}
+		}
+		return msj;
 	}
 
-	public MaxPQ<Multa> comparendosMasCercanos()
+	public String comparendosMasCercanos(int m)
 	{
-		return null;
+		String msj = "";
+
+		for(int i = 1; i <= m; i++)
+		{
+			msj += i + "." + heap1B.delMax().toString() + "\n";
+		}
+
+		return msj;
 	}
-	
-	public Iterable<Multa> reque2B()
+
+	public String reque2B(String medioDete, String claseVehi, String tipoServi, String loc)
 	{
-		return null;
+		String msj = "";
+		
+		Llave2B llave = new Llave2B(medioDete, claseVehi, tipoServi, loc);
+		Valor2B val = hash2B.get(llave);
+		if(val == null) return "no se encontraron comparendos con esos valores";
+		int tam = val.multas.size();
+		for(int i = 1; i <= tam; i++)
+		{
+			msj += val.multas.dequeue().toString() + "\n";
+		}
+		
+		return msj;
 	}
-	
-	public AVLTreeST<Geo, Multa> darMultasLatitudMinMax(double min, double max, String vehiculo)
+
+	public String darMultasLatitudMinMax(double min, double max, String vehiculo)
 	{
-		return null;
+		String msj = "";
+		
+		Queue<Double> q = (Queue) arbol3B.keys(min, max);
+		int tam = q.size();
+		for(int i = 1; i <= tam; i++)
+		{
+			Multa m = arbol3B.get(q.dequeue());
+			if(m.getVehiculo().compareToIgnoreCase(vehiculo) == 0)
+			{
+				msj +=  m.toString() + "\n";
+			}
+		}
+		return msj;
 	}
-	
+
 	public void reque1C(int intervalo)
 	{
-		
+
 	}
-	
+
 	public void reque2C()
 	{
-		
+
 	}
-	
+
 	public void reque1C()
 	{
-		
+
 	}
 
 }//llave clase
