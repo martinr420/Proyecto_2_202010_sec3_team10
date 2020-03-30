@@ -21,6 +21,8 @@ import com.google.gson.stream.JsonReader;
 import com.sun.org.apache.xerces.internal.impl.io.UTF8Reader;
 
 import model.data_structures.AVLTreeST;
+import model.data_structures.IHashTable;
+import model.data_structures.IMaxColaCP;
 import model.data_structures.LinearProbingHashST;
 import model.data_structures.MaxPQ;
 import model.data_structures.Queue;
@@ -40,13 +42,13 @@ public class Model
 	 * Atributos del modelo del mundo
 	 */
 	private Queue<Multa> datos; 
-	private MaxPQ<Multa> heapMayorID;
-	private SeparateChainingHashST<LlaveMesDIa, Queue<Multa>> hash2A;
-	private MaxPQ<Multa> heap1A;
-	private AVLTreeST<Date, Multa> arbol3A; 
-	private MaxPQ<Multa> heap1B;
-	private LinearProbingHashST<Llave2B, Queue<Multa>> hash2B;
-	private AVLTreeST<Double, Multa> arbol3B;
+	private IMaxColaCP<Multa> heapMayorID;
+	private IHashTable<LlaveMesDIa, Queue<Multa>> hash2A;
+	private IMaxColaCP<Multa> heap1A;
+	private IHashTable<Date, Multa> arbol3A; 
+	private IMaxColaCP<Multa> heap1B;
+	private IHashTable<Llave2B, Queue<Multa>> hash2B;
+	private IHashTable<Double, Multa> arbol3B;
 
 
 

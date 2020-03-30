@@ -4,7 +4,7 @@
   router="FAN">  
   <class id="1" language="java" name="main.Main" project="Proyecto 2" file="/Proyecto 2/src/main/Main.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="113" x="163" y="56"/>    
+    <position height="99" width="113" x="91" y="46"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

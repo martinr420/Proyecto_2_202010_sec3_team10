@@ -144,6 +144,15 @@ public class SeparateChainingHashST<Key, Value> implements IHashTable<Key, Value
 				queue.enqueue(key);
 		}
 		return queue;
+	}
+
+	@Override
+	/**
+	 * No usar en esta clase
+	 */
+	public Iterable<Key> keys(Key min, Key max) {
+		// TODO Auto-generated method stub
+		return null;
 	} 
 
 }

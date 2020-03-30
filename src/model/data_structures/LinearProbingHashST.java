@@ -209,4 +209,13 @@ public class LinearProbingHashST<Key, Value> implements IHashTable<Key, Value>{
         return true;
     }
 
+	@Override
+	/**
+	 * No usar en esta clase
+	 */
+	public Iterable<Key> keys(Key min, Key max) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
