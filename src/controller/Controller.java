@@ -89,24 +89,34 @@ public class Controller {
 					view.displayOp2Data(modelo.mesDia(mes, dia));
 					break;
 				case 3:
+					String fMin, fMax, loc1;
+					
 					view.displayOp3Menu();
-					String fMin = reader.next();
+					fMin = reader.next();
+					
 					
 					view.displayOp31Menu();
-					String fMax = reader.next();
+					fMax = reader.next();
+					
 					
 					view.displayOp32Menu();
-					String loc = reader.next();
-
-
+					loc1 = reader.next();
+					loc1 = loc1.replace('-', ' ');
+					 
 					
+					//2018/01/01-00:00:00
+					System.out.println(fMin);
+					System.out.println(fMax);
+					System.out.println(loc1);
 					try {
-						String msj = modelo.fechaHoraLoc(fMin, fMax, loc);
+						
+						String msj = modelo.fechaHoraLoc(fMin, fMax, loc1);
 						view.displayOp3Data(msj);
+						
 						
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
-						System.out.println("Escriba bien la fecha \n");
+						System.out.println("\n Escriba bien la fecha \n");
 					}
 					
 					

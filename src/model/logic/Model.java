@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.GregorianCalendar;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -41,11 +41,11 @@ public class Model
 	 */
 	private Queue<Multa> datos; 
 	private MaxPQ<Multa> heapMayorID;
-	private SeparateChainingHashST<LlaveMesDIa, ValorMesDia> hash2A;
+	private SeparateChainingHashST<LlaveMesDIa, Queue<Multa>> hash2A;
 	private MaxPQ<Multa> heap1A;
 	private AVLTreeST<Date, Multa> arbol3A; 
 	private MaxPQ<Multa> heap1B;
-	private LinearProbingHashST<Llave2B, Valor2B> hash2B;
+	private LinearProbingHashST<Llave2B, Queue<Multa>> hash2B;
 	private AVLTreeST<Double, Multa> arbol3B;
 
 
@@ -64,14 +64,14 @@ public class Model
 		ComparadorGravedad c = new ComparadorGravedad();
 		heap1A= new MaxPQ<Multa>(31, c);
 
-		hash2A = new SeparateChainingHashST<LlaveMesDIa, ValorMesDia>(1);
+		hash2A = new SeparateChainingHashST<LlaveMesDIa, Queue<Multa>>(31);
 
 		arbol3A = new AVLTreeST<Date, Multa>();
 
 		ComparadorCercanoALaEstacion cc = new ComparadorCercanoALaEstacion();
 		heap1B = new MaxPQ<Multa>(31, cc);
 
-		hash2B = new LinearProbingHashST<Llave2B, Valor2B>(31);
+		hash2B = new LinearProbingHashST<Llave2B, Queue<Multa>>(31);
 
 		arbol3B = new AVLTreeST<Double, Multa>();
 	}
@@ -147,49 +147,45 @@ public class Model
 				heap1A.insert(multa);
 				heap1B.insert(multa);
 
-				Calendar c = Calendar.getInstance();
-				int anioC = Integer.parseInt(anio);
-				int mesC = Integer.parseInt(mes);
-				int diaC = Integer.parseInt(dia);
-				Calendar calendario = Calendar.getInstance();
-				calendario.set(Calendar.YEAR, anioC);
-				calendario.set(Calendar.MONTH, mesC);
-				calendario.set(Calendar.DATE, diaC);
+			
+				GregorianCalendar gc = new GregorianCalendar();
+				gc.setTime(fecha);
+				int diaSemana = gc.get(Calendar.DAY_OF_WEEK);
+				int mesNum = gc.get(Calendar.MONTH) + 1;
 
-				int diaSemana = calendario.get(Calendar.DAY_OF_WEEK);
+				LlaveMesDIa llaveMesDia = new LlaveMesDIa(mesNum, diaSemana);
 
-				LlaveMesDIa llaveMesDia = new LlaveMesDIa(mesC, diaSemana);
-
-				ValorMesDia v = hash2A.get(llaveMesDia);
+				Queue<Multa> queue1 = hash2A.get(llaveMesDia);
 				
-				if( v != null)
+				if( queue1 != null)
 				{
-					v.multas.enqueue(multa);
+					queue1.enqueue(multa);
 				}
 				else
 				{
-					ValorMesDia valor = new ValorMesDia();
-					valor.multas.enqueue(multa);
-					hash2A.put(llaveMesDia, valor);
+					Queue<Multa> q1 = new Queue<Multa>();
+					q1.enqueue(multa);
+					hash2A.put(llaveMesDia, q1);
 				}
 				
 				arbol3A.put(fecha, multa);
 				
 				Llave2B l2b = new Llave2B(medioDete, claseVehiculo, tipoServicio, localidad);
-				Valor2B v2b = hash2B.get(l2b);
+				Queue<Multa> v2b = hash2B.get(l2b);
 				if(v2b != null)
 				{
-					v2b.multas.enqueue(multa);
-					System.out.println(medioDete +" "+ claseVehiculo +" "+ tipoServicio +" "+ localidad);
+					v2b.enqueue(multa);
 				}
 				else
 				{
-					Valor2B val2B = new Valor2B();
-					val2B.multas.enqueue(multa);
+					Queue<Multa> val2B = new Queue<Multa>();
+					val2B.enqueue(multa);
 					hash2B.put(l2b, val2B);
 				}
+				
 				double lati = geometria.getLatitud();
 				arbol3B.put(lati, multa);
+			
 			} //llave for grande
 			
 
@@ -237,7 +233,7 @@ public class Model
 	{
 		String msj = "";
 		LlaveMesDIa llave = new LlaveMesDIa(pMes, dia);
-		ValorMesDia v = hash2A.get(llave);
+		Queue<Multa> v = hash2A.get(llave);
 
 		if(v == null ) 
 		{
@@ -246,11 +242,11 @@ public class Model
 
 		else
 		{
-			for(int i = 1; i <= v.multas.size(); i++)
+			int tam = v.size();
+			for(int i = 1; i <= tam; i++)
 			{
-				Multa multa = v.multas.dequeue();
+				Multa multa = v.dequeue();
 				msj += i +". " + multa.toString() + "\n" ; 
-				v.multas.enqueue(multa);
 			}
 		}
 		return msj;
@@ -286,18 +282,16 @@ public class Model
 
 		String msj = "";
 		LlaveMesDIa llave = new LlaveMesDIa(pMes, pDia);
-		ValorMesDia v = hash2A.get(llave);
+		Queue<Multa> v = hash2A.get(llave);
 
-		if(v == null ) 
-		{
-			return "No hay comparendos con los datos indicados";
-		}
-
+		if(v == null ) return "No hay comparendos con los datos indicados";
 		else
 		{
-			for(int i = 1; i <= v.multas.size(); i++)
+			int tam = v.size();
+			for(int i = 1; i <= tam; i++)
 			{
-				msj += i +". " + v.multas.dequeue().toString() + "\n" ; 
+				Multa m = v.dequeue();
+				msj += i +". " + m.toString() + "\n" ; 
 			}
 		}
 		return msj;
@@ -307,7 +301,7 @@ public class Model
 	public String fechaHoraLoc(String min, String max, String localidad) throws ParseException
 	{
 		String msj = "";
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");
 		Date fMin = sdf.parse(min);
 		Date fMax = sdf.parse(max);
 	
@@ -342,13 +336,13 @@ public class Model
 	{
 		String msj = "";
 		
-		Llave2B llave = new Llave2B(medioDete, claseVehi, tipoServi, loc);
-		Valor2B val = hash2B.get(llave);
+		Llave2B llave = new Llave2B(medioDete.toUpperCase(), claseVehi.toUpperCase(), tipoServi, loc.toUpperCase());
+		Queue<Multa> val = hash2B.get(llave);
 		if(val == null) return "no se encontraron comparendos con esos valores";
-		int tam = val.multas.size();
+		int tam = val.size();
 		for(int i = 1; i <= tam; i++)
 		{
-			msj += val.multas.dequeue().toString() + "\n";
+			msj += val.dequeue().toString() + "\n";
 		}
 		
 		return msj;

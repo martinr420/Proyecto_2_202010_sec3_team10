@@ -61,7 +61,7 @@ public class Multa implements Comparable<Multa>
 				" el vehiculo es "+ vehiculo +" el tipo de servicio es " + servicio + 
 				" la infraccion es " + infraccion + 
 				" la descripcion de lo sucedido es " + descripcion + " la localidad es "+
-				localidad + "el municipio es " + municipio + " la geografira es "+ geo.toString();
+				localidad + " el municipio es " + municipio + " la geografira es "+ geo.toString();
 
 		return msj;
 	}

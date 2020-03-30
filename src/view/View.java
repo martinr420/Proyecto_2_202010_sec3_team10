@@ -132,16 +132,18 @@ public class View
     public void displayOp3Menu()
     {
     	System.out.println("===== Buscar Comparendos fecha y hora =====");
-    	System.out.println("Digite el limite inferior en formato (YYYY-MM-DD HH:MM:ss)");
+    	System.out.println("Digite el limite inferior en formato (yyyy/MM/dd-HH:mm:ss)");
     }
     public void displayOp31Menu()
     {
-    	System.out.println("digite el limite superior en el mismo formato (YYYY-MM-DD HH:MM:ss)");
+    	System.out.println("digite el limite superior en el mismo formato (yyyy/MM/dd-HH:mm:ss)");
     }
     
     public void displayOp32Menu()
     {
     	System.out.println("digite la localidad");
+    	System.out.println("Si la localidad esta compuesta por dos palabras entonces remplacelar por '-'");
+    	System.out.println("ejemplo BARRIOS UNIDOS seria BARRIOS-UNIDOS");
     }
     public void displayOp3Data(String comparendos)
     {
