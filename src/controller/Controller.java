@@ -152,7 +152,21 @@ public class Controller {
 					view.displayOpData6(min, max, veh, mesj);
 				
 					break;
-				
+				case 7:
+					System.out.println("Inserte un intervalo de dias");
+					int intervalo = reader.nextInt();
+					view.alo1c();
+					modelo.reque1C(intervalo);
+					break;
+				case 8:
+					view.alo2c();
+					modelo.reque2C();
+					break;
+					
+				case 10:
+					view.alo2c();
+					modelo.reque3C();
+					break;
 				default:
 					view.badOption();
 					end = true;

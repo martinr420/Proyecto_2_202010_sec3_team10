@@ -216,6 +216,7 @@ public class MaxPQ<Key extends Comparable<Key>> implements Iterable<Key>, IMaxCo
      *
      * @return an iterator that iterates over the keys in descending order
      */
+    @Override
     public Iterator<Key> iterator() {
         return new HeapIterator();
     }

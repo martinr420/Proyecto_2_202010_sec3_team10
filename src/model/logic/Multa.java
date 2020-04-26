@@ -29,6 +29,7 @@ public class Multa implements Comparable<Multa>
 
 	private Geo geo;
 	
+	private int numeroDiasEspera;
 
 
 
@@ -47,7 +48,7 @@ public class Multa implements Comparable<Multa>
 		this.localidad = localidad;
 		this.municipio = municipio;
 		this.geo = geo;
-		
+		this.numeroDiasEspera = 0;
 		
 		
 		
@@ -143,6 +144,15 @@ public class Multa implements Comparable<Multa>
 		return municipio;
 	}
 
+	public int getNumeroDiasEspera()
+	{
+		return numeroDiasEspera;
+	}
+	
+	public void setNumeroDiasEspera(int numeroDiasEspera)
+	{
+		this.numeroDiasEspera = numeroDiasEspera;
+	}
 	@Override
 	public int compareTo(Multa o)
 	{

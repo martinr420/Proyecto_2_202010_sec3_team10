@@ -235,5 +235,18 @@ public class View
     	System.out.println(comenrtario);
     }
     
+    public void alo1c()
+    {                       
+    	System.out.println("Rango de fechas      | Comparendos durante el año");
+    	System.out.println("-------------------------------------------------");
+    }
+    
+    public void alo2c() 
+    {                      
+    	System.out.println("Fecha     | Comparendos procesados           ***");
+    	System.out.println("          | Comparendos que estan en espera  ###");
+    	System.out.println("------------------------------------------------");
+    }
+    
    
 }

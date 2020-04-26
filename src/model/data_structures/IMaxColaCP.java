@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import java.util.Iterator;
+
 public interface IMaxColaCP<K extends Comparable<K>>
 {
 	
@@ -8,6 +10,6 @@ public interface IMaxColaCP<K extends Comparable<K>>
 	public K max();// return the largest key
 	K delMax();// return and remove the largest key
 	public boolean isEmpty();// is the priority queue empty?
-	
+	 public Iterator<K> iterator();
 
 }
