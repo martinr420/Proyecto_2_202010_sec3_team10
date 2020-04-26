@@ -1,15 +1,18 @@
 package controller;
 
+import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import model.data_structures.ListaDoblementeEncadenada;
-import model.data_structures.ListaDoblementeEncadenada.IteratorLista;
+
 import model.data_structures.noExisteObjetoException;
-import model.logic.Localidad;
 import model.logic.Model;
 import model.logic.Multa;
 import view.View;
+
 
 public class Controller {
 
@@ -57,182 +60,113 @@ public class Controller {
 
 			while (!end) {
 				view.displayMenu();
-				
+
 				int option = reader.nextInt();
 				switch (option) {
 
 				case 0:
-					
-					
-					modelo.darInfoCargaDatos();
 
-					
-					
-					
+					try {
+						view.displayOp0Menu(modelo.darInfoCargaDatos());
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						System.out.println("no se encontro el archivo");;
+					}
+
 					break;
-
 				case 1:
-					// Display option 1
-					view.displayOp1Menu();
-					String loc = reader.next();
-					Multa laMulta = modelo.darComparendoLocalidad(loc);
-					
-					view.displayOp1Data(laMulta.toString());
-					
-					
-					
-					break;
 
+					view.displayOp1Menu();
+					int m = reader.nextInt();
+					view.displayOp1Data(modelo.mayorGravedad(m));
+
+					break;
 				case 2:
 					view.displayOp2Menu();
-					String anio = reader.next();
+					int mes = reader.nextInt();
 					view.displayOp21Menu();
-					String mes = reader.next();
-					view.displayOp23menu();
 					String dia = reader.next();
-					String fecha = anio + "/"  + mes + "/" + dia;
-					
-					
-					ListaDoblementeEncadenada<Multa> lista = modelo.darMultaPorFecha(fecha);
-					long tamano = lista.darTamano();
-					view.displayOp2Data(fecha, tamano);
-					view.preioneOk();
-					if(reader.next().compareToIgnoreCase("ok") == 0)
-					{
-						IteratorLista iter = (IteratorLista) lista.iterator();
-						while(iter.hasNext())
-						{
-							Comparable multa = (Comparable) iter.next();
-							System.out.println(multa.toString());
-						}
-						System.out.println("=================================================================================================");
-						
-						
-					}
-					System.out.println("no digito ok :'(");
-					
-					
-					
-
+					view.displayOp2Data(modelo.mesDia(mes, dia));
 					break;
-					
 				case 3:
+					String fMin, fMax, loc1;
+					
 					view.displayOp3Menu();
-					String anio2 = reader.next();
-					view.displayOp21Menu();
-					String mes2 = reader.next();
-					view.displayOp23menu();
-					String dia2 = reader.next();
-					String fecha2 = anio2 + "/"  + mes2 + "/" + dia2;
+					fMin = reader.next();
+					
 					
 					view.displayOp31Menu();
-					String anio3 = reader.next();
-					view.displayOp21Menu();
-					String mes3 = reader.next();
-					view.displayOp23menu();
-					String dia3 = reader.next();
-					String fecha3 = anio3 + "/" + mes3 + "/" + dia3;
+					fMax = reader.next();
 					
 					
+					view.displayOp32Menu();
+					loc1 = reader.next();
+					loc1 = loc1.replace('-', ' ');
+					 
 					
+					//2018/01/01-00:00:00
+					System.out.println(fMin);
+					System.out.println(fMax);
+					System.out.println(loc1);
+					try {
+						
+						String msj = modelo.fechaHoraLoc(fMin, fMax, loc1);
+						view.displayOp3Data(msj);
+						
+						
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						System.out.println("\n Escriba bien la fecha \n");
+					}
 					
-					modelo.darMultasComparacion(fecha2, fecha3);
-							
-				
-					view.displayOp3Menu();
 					
 					break;
-					
-					
 				case 4:
 					view.displayOp4Menu();
-					String pInfraccion =reader.next();
-					Multa laMulta4 = modelo.ConsultarComparendoPorInfraccion(pInfraccion);
-					
-					
-					view.displayOp4Data(laMulta4.toString());
-					break;
-					
-				case 5:
-					view.displayOp5Menu();
-					String laInfra = reader.next();
-					
-					ListaDoblementeEncadenada<Multa> laLista = modelo.darComparendosPorInfraccion(laInfra);
-					IteratorLista iter = (IteratorLista) laLista.iterator();
-					
-					System.out.println("El total de Comparendos es de :" + laLista.darTamano());
-					
-					System.out.println("Presione ok");
-					
-					if(reader.next().equals("ok"))
-					{
-						while(iter.hasNext())
-						{
-							Multa laMu = (Multa) iter.next();
-							System.out.println(laMu.toString());
-						}
-					}
-					
-				
-					break;
-				case 6:
-					view.diplayOp6Menu();
-					modelo.darMultasComparacionTipoServicio();
-					break;
-				case 7:
-					reader.nextLine();
-					System.out.println("Ingrese la localidad");
-					String localidad = reader.nextLine();
-					System.out.println("Ingrese la fecha inicial");
-					String fechaInicial = reader.nextLine();
-					System.out.println("Ingrese la fecha final");
-					String fechaFinal = reader.nextLine();
-					modelo.comparendosEntreFechas(fechaInicial, fechaFinal, localidad);
-					break;
-					
-				case 8:
-				
-				reader.nextLine();
-				System.out.println("Ingrese la fecha inicial");
-				String fechaInicial1 = reader.nextLine();
-				System.out.println("Ingrese la fecha final");
-				String fechaInicial2 = reader.nextLine();
-				System.out.println("Ingrese el numero de codigos");
-				String elN = reader.nextLine();
-				modelo.darMultasOrdenadasN(elN, fechaInicial1, fechaInicial2);
-				break;
-				
-				
-				case 10:
-					view.displayOp10Menu();
-					
-					ListaDoblementeEncadenada<Localidad> localidades = modelo.ASCII();
-					System.out.println(localidades.darTamano());
-					IteratorLista iterLoc = (IteratorLista) localidades.iterator();
-					
-					while(iterLoc.hasNext())
-					{
-						Localidad loquis = (Localidad) iterLoc.next();
-						int cantidad = loquis.getCantidadComparendos()/50;
-						String asteriscos = "";
-						if(cantidad == 0)
-						{
-							System.out.println(loquis.getNombre() + " | " + "sin comparendos");
-						}
-						for (int i = 0; i < cantidad; i++)
-						{
-							asteriscos += "*";
-						}
-						if((cantidad % 50) > 0)
-						{
-							asteriscos += "*";
-						}
-						
-						System.out.println(loquis.getNombre() + " | " + asteriscos );
-					}
+					int n = reader.nextInt();
+					view.displayOp4Data(modelo.comparendosMasCercanos(n));
 
 					break;
-					// Invalid option
+				case 5: 
+					view.displayOp5Menu();
+					String medioDete = reader.next();
+					view.displayOp51Menu();
+					String vehiculo = reader.next();
+					view.displayOp52Menu();
+					String servicio = reader.next();
+					view.displayOp53Menu();
+					String localidad = reader.next();
+					
+					String msj = modelo.reque2B(medioDete, vehiculo, servicio, localidad);
+					view.displayOp5Data(medioDete, vehiculo, servicio, localidad, msj);
+					break;
+				case 6:
+					view.displayOp6Menu();
+					double min = reader.nextDouble();
+					view.displayOp61Menu();
+					double max = reader.nextDouble();
+					view.displayOp62Menu();
+					String veh = reader.next();
+				
+					String mesj = modelo.darMultasLatitudMinMax(min, max, veh);
+					view.displayOpData6(min, max, veh, mesj);
+				
+					break;
+				case 7:
+					System.out.println("Inserte un intervalo de dias");
+					int intervalo = reader.nextInt();
+					view.alo1c();
+					modelo.reque1C(intervalo);
+					break;
+				case 8:
+					view.alo2c();
+					modelo.reque2C();
+					break;
+					
+				case 10:
+					view.alo2c();
+					modelo.reque3C();
+					break;
 				default:
 					view.badOption();
 					end = true;

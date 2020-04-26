@@ -22,16 +22,16 @@ public class View
         System.out.println(  " **==========================**");
         System.out.println(" ||      ==== MENU ====      ||");
 
-        System.out.println( " ||" +  " 0. Cargar datos   "  + "       ||");
-        System.out.println( " ||" +  " 1. Consultar primer comparendo con localidad"  + "        ||");
-        System.out.println( " ||" + " 2. Consultar Comparendos de una fecha " + " ||");
-        System.out.println("||" + "3. Comparar comparendos por fecha");
-        System.out.println("||" + "4. Dar primer Comparendo Infraccion");
-        System.out.println("|| 5. darComparendo por Infraccion");
-        System.out.println("|| 6. Dar comparendos por tipo de servicio");
-        System.out.println("|| 7. Dar comparendos por fecha y localidad");
-        System.out.println("|| 8. Dar codigos con la mayor cantidad de comparendos.")
-        System.out.println("|| 10. dar ASCII localidades");
+        System.out.println( " ||" +  " 0. Cargar datos   "  + "||");
+        System.out.println( " ||" +  " 1. Obtener M comparendos mayor gravedad"  + " ||");
+        System.out.println( " ||" + " 2. Consultar Comparendos por mes y dia de la semana " + " ||");
+        System.out.println("||" + "3. Buscar comparendos fecha hora localidad  ||");
+        System.out.println("||" + "4. buscar los M comparendos mas cercanos a la estacion de policia ||");
+        System.out.println("|| 5. Bucar los comparendos medio dete, clase vehiculo, tipo servi, y localidad  ||");
+        System.out.println("|| 6. buscar comparendos latitud y tipo vehiculo  ||");
+        System.out.println("|| 7. Visualizar datos ASCII  ||");
+        System.out.println("|| 8. Costo tiempos de espera.  ||");
+        System.out.println("|| 10. Costo tiempos de espera nuevo sistema  ||");
         System.out.println( " **==========================**\n");
 
         // display hint
@@ -63,7 +63,8 @@ public class View
     /**
      * Print option 0 menu.
      */
-    public void displayOp0Menu(String mensaje) {
+    public void displayOp0Menu(String mensaje)
+    {
         System.out.println( "====== Cargar datos ======");
         System.out.println(mensaje);
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -71,14 +72,7 @@ public class View
 
     }
 
-    /**
-     * Print option 0 data.
-     */
-    public void displayOp0Data(String pName) {
-        System.out.println( "Name set to: " + pName);
-        System.out.println("======================\n");
-
-    }
+    
 
     // -------------------------------------------------------------
     // Option 1
@@ -88,8 +82,8 @@ public class View
      * Print option 1 menu.
      */
     public void displayOp1Menu() {
-        System.out.println( "====== Consultar primer comparendo localidad  ======");
-        System.out.println("digite la localidad aqui: ");
+        System.out.println( "====== Obtener Comparendos n mayor gravedad  ======");
+        System.out.println("digite el Numero de comparendos");
         
 
     }
@@ -97,8 +91,10 @@ public class View
     /**
      * Print option 1 data.
      */
-    public void displayOp1Data(String multa) {
-        System.out.println("El comparendo es: " + multa );
+    public void displayOp1Data(String comparendos) 
+    {
+        System.out.println("Los comparendos son" );
+        System.out.println(comparendos);
         System.out.println( "======================\n");
 
     }
@@ -111,33 +107,23 @@ public class View
      * Print option 2 menu.
      */
     public void displayOp2Menu() {
-        System.out.println( "====== Dar comparendos por fecha  ======");
-        System.out.println("Digite el a�o de la fecha");
+        System.out.println( "====== Buscar comparendos mes y dia  ======");
+        System.out.println("ingrese el numero del mes");
        
     }
     public void displayOp21Menu()
     {
-    	 System.out.println("Digite el mes ");
-         
-    }
-    public void displayOp23menu()
-    {
-    	System.out.println("Digite el dia ");
+    	 System.out.println("Digite el dia de la semana.");
     }
     
-    public void preioneOk()
-    {
-    	System.out.println("digite la palabra ok");
-    }
-
+    
     /**
      * Print option 2 data.
      */
-    public void displayOp2Data(String pFecha, long total) {
-
-        System.out.println( "Fecha: "  + pFecha);
+    public void displayOp2Data(String comparendos) 
+    {
         
-        System.out.println("Total: " + total);
+        System.out.println(comparendos);
        
         System.out.println("======================\n");
 
@@ -145,37 +131,121 @@ public class View
     
     public void displayOp3Menu()
     {
-    	System.out.println("===== Comparar Comparendos =====");
-    	System.out.println("Digite el a�o de la fecha");
+    	System.out.println("===== Buscar Comparendos fecha y hora =====");
+    	System.out.println("Digite el limite inferior en formato (yyyy/MM/dd-HH:mm:ss)");
     }
     public void displayOp31Menu()
     {
-    	System.out.println("digite el a�o de la segunda fecha");
+    	System.out.println("digite el limite superior en el mismo formato (yyyy/MM/dd-HH:mm:ss)");
+    }
+    
+    public void displayOp32Menu()
+    {
+    	System.out.println("digite la localidad");
+    	System.out.println("Si la localidad esta compuesta por dos palabras entonces remplacelar por '-'");
+    	System.out.println("ejemplo BARRIOS UNIDOS seria BARRIOS-UNIDOS");
+    }
+    public void displayOp3Data(String comparendos)
+    {
+    	System.out.println("Los comparendos son: ");
+    	System.out.println(comparendos);
     }
     public void displayOp4Menu()
     {
-    	System.out.println("======= Dar Primer Comparendo con infraccio");
-    	System.out.println("digite la infraccion");
+    	System.out.println("======= dar m Comparendos mas cercanos a la policia ==========");
+    	System.out.println("digite la cantidad");
     }
     
-    public void displayOp4Data(String pComparendo)
+    public void displayOp4Data(String comparendos)
     {
-    	System.out.println("El comparendo es: " + pComparendo);
+    	System.out.println("Los comparendos son: ");
+    	System.out.println(comparendos);
     }
     
     public void displayOp5Menu()
     {
-    	System.out.println("============================== dar comparendos por infraccion");
-    	System.out.println("Digite la infraccion");
+    	System.out.println("========= dar comparendos por deteccion, clase vehiculo, tipo Servicio y localidad");
+    	System.out.println("Digite el medio de deteccion");
     }
-    public void  displayOp10Menu()
+    public void displayOp51Menu()
     {
-    	System.out.println("================== ASCII=========================");
+    	System.out.println("Digite la clase del vehiculo");
     }
     
-    public void diplayOp6Menu()
+    public void displayOp52Menu()
     {
-    	System.out.println("============================== dar comparendos por infraccion");
+    	System.out.println("Digite el tipo de servicio");
+    }
+    public void displayOp53Menu()
+    {
+    	System.out.println("Digite la localidad");
+    }
+    
+    public void displayOp5Data(String dete, String clase, String servicio, String localidad, String comparendos)
+    {
+    	System.out.println("los comparendos con los datos: " + dete +" "+ clase +" "+ servicio +" "+localidad);
+    	System.out.println(comparendos);
+    }
+    
+    public void displayOp6Menu()
+    {
+    	System.out.println("==================== dar comparendos por latitud y tipo servicio ====================");
+    	System.out.println("Digite la latitud minima");
+    }
+    public void displayOp61Menu()
+    {
+    	System.out.println("Digite la latitud maxima");
+    }
+    
+    public void displayOp62Menu()
+    {
+    	System.out.println("Digite el tipo de vehiculo");
+    }
+    public void displayOpData6(double latMin, double latMax, String servi, String comparendos)
+    {
+    	System.out.println("los comparendos con las siguientes caracteristicas: " + latMin + " " + latMax + " " + servi + " son: " );
+    	System.out.println(comparendos);
+    }
+    
+    public void dispayOpMenu7()
+    {
+    	System.out.println("Tabla ASCII");
+    	System.out.println("digite el intervalo de dias");
+    }
+    public void displayOp7Data(int dias, String tabla)
+    {
+    	System.out.println("La tabla con el intervalo de dias " + dias +" es:");
+    	System.out.println(tabla);
+    }
+    
+    public void displayOp8Menu(String tabla)
+    {
+    	System.out.println("============ costo tiempo ==============");
+    	System.out.println(tabla);
+    }
+    
+    public void displayOp9Menu(String tabla)
+    {
+    	System.out.println("============= Costo tiempos de espera ==================");
+    	System.out.println(tabla);
+    }
+    public void  displayOp10Menu(String comenrtario)
+    {
+    	System.out.println("================== Comentarios sistema =========================");
+    	System.out.println(comenrtario);
+    }
+    
+    public void alo1c()
+    {                       
+    	System.out.println("Rango de fechas      | Comparendos durante el año");
+    	System.out.println("-------------------------------------------------");
+    }
+    
+    public void alo2c() 
+    {                      
+    	System.out.println("Fecha     | Comparendos procesados           ***");
+    	System.out.println("          | Comparendos que estan en espera  ###");
+    	System.out.println("------------------------------------------------");
     }
     
    

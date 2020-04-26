@@ -1,9 +1,13 @@
 package model.data_structures;
 
+
+/**
+ * Tomado de https://github.com/kevin-wayne/algs4/blob/master/src/main/java/edu/princeton/cs/algs4/MaxPQ.java
+ */
 import java.util.NoSuchElementException;
 
 //Tomado de https://github.com/kevin-wayne/algs4/blob/master/src/main/java/edu/princeton/cs/algs4/AVLTreeST.java
-public class AVLTreeST<Key extends Comparable<Key>, Value> {
+public class AVLTreeST<Key extends Comparable<Key>, Value> implements IHashTable<Key, Value>{
 
 	/**
 	 * The root node.
@@ -714,7 +718,7 @@ public class AVLTreeST<Key extends Comparable<Key>, Value> {
 	 * @return all keys in the symbol table following an in-order traversal
 	 */
 	public Iterable<Key> keysInOrder() {
-		LinkedQueue<Key> queue = new LinkedQueue<Key>();
+		Queue<Key> queue = new Queue<Key>();
 		keysInOrder(raiz, queue);
 		return queue;
 	}
@@ -725,7 +729,7 @@ public class AVLTreeST<Key extends Comparable<Key>, Value> {
 	 * @param x the subtree
 	 * @param queue the queue
 	 */
-	private void keysInOrder(NodoAVL x, LinkedQueue<Key> queue) {
+	private void keysInOrder(NodoAVL x, Queue<Key> queue) {
 		if (x == null) 
 		{
 			return;
@@ -743,11 +747,11 @@ public class AVLTreeST<Key extends Comparable<Key>, Value> {
 	 */
 	public Iterable<Key> keysLevelOrder() throws noExisteObjetoException {
 
-		LinkedQueue<Key> queue = new LinkedQueue<Key>();
+		Queue<Key> queue = new Queue<Key>();
 
 		if (!isEmpty())
 		{
-			LinkedQueue<NodoAVL> queue2 = new LinkedQueue<NodoAVL>();
+			Queue<NodoAVL> queue2 = new Queue<NodoAVL>();
 			queue2.enqueue(raiz);
 			while (!queue2.isEmpty())
 			{
@@ -786,7 +790,7 @@ public class AVLTreeST<Key extends Comparable<Key>, Value> {
 		{
 			throw new IllegalArgumentException("second argument to keys() is null");
 		}
-		LinkedQueue<Key> queue = new LinkedQueue<Key>();
+		Queue<Key> queue = new Queue<Key>();
 		keys(raiz, queue, min, max);
 		return queue;
 	}
@@ -800,7 +804,7 @@ public class AVLTreeST<Key extends Comparable<Key>, Value> {
 	 * @param min the lowest key
 	 * @param max the highest key
 	 */
-	private void keys(NodoAVL x, LinkedQueue<Key> queue, Key min, Key max) 
+	private void keys(NodoAVL x, Queue<Key> queue, Key min, Key max) 
 	{
 		if (x == null)
 		{

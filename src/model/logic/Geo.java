@@ -1,10 +1,7 @@
 package model.logic;
 
-public class Geo {
-
-	
-	
-
+public class Geo 
+{
 
 	public String tipo;
 	
@@ -34,6 +31,16 @@ public class Geo {
 		this.coordenadas = coordenadas;
 	}
 	
+	public double getLatitud()
+	{
+		return coordenadas[1];
+	}
+	
+	public double getLongitud()
+	{
+		return coordenadas[0];
+	}
+	
 	public String toString()
 	{
 		String msj = " el tipo de geo es " + tipo + " las coordenas son " + coordenadas[0] 
@@ -41,4 +48,6 @@ public class Geo {
 		
 		return msj;
 	}
+
+	
 }
